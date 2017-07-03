@@ -1,0 +1,149 @@
+\documentclass[letterpaper, 10 pt, conference]{IEEEconf}
+%\IEEEoverridecommandlockouts% This command is only needed if 
+                                                          % you want to use the \thanks command
+%\overrideIEEEmargins                                      % Needed to meet printer requirements.
+\usepackage{times}
+
+
+\makeatletter 
+\let\NAT@parse\undefined
+\makeatother
+
+% numbers option provides compact numerical references in the text. 
+%\usepackage[numbers]{natbib}
+\usepackage{multicol}
+\usepackage[bookmarks=true]{hyperref}
+
+\usepackage{bbm}
+\usepackage{calc}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks =false,
+  urlcolor = black,
+  linkcolor = black
+}
+\usepackage{graphicx}
+\usepackage[cmex10]{amsmath}
+\usepackage{bm}
+\usepackage{amssymb}
+\usepackage{rotating}
+\usepackage{balance}
+\usepackage{chngcntr}
+\counterwithin{paragraph}{subsection} % makes paragraph depend on subsection
+
+
+%\usepackage{xfrac}
+\usepackage{nicefrac}
+\usepackage{cite}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage{colortbl}
+\usepackage{overpic}
+\graphicspath{{./pictures/pdf/},{./pictures/ps/},{./pictures/png/},{./pictures/jpg/}}
+\usepackage{breqn} %for breaking equations automatically
+\usepackage[ruled]{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{algorithmic}
+\usepackage{multirow}
+%\usepackage{todonotes}
+\usepackage{authblk}
+
+\newcommand{\todo}[1]{\vspace{5 mm}\par \noindent \framebox{\begin{minipage}[c]{0.98 \columnwidth} \ttfamily\flushleft \textcolor{red}{#1}\end{minipage}}\vspace{5 mm}\par}
+% uncomment this to hide all red todos
+%\renewcommand{\todo}{}
+
+%% ABBREVIATIONS
+\newcommand{\qstart}{q_{\text{start}}}
+
+%% MACROS
+
+\providecommand{\pmax}{ \overline{p} }   %p_{\text{max}}
+\providecommand{\pmin}{ \underline{p} }   %p_{\text{min}}
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert}
+\providecommand{\normn}[2]{\left\lVert#1\right\rVert_#2}
+\providecommand{\dualnorm}[1]{\norm{#1}_\ast}
+\providecommand{\dualnormn}[2]{\norm{#1}_{#2\ast}}
+\providecommand{\set}[1]{\lbrace\,#1\,\rbrace}
+\providecommand{\cset}[2]{\lbrace\,{#1}\nobreak\mid\nobreak{#2}\,\rbrace}
+\providecommand{\lscal}{<}
+\providecommand{\gscal}{>}
+\providecommand{\lvect}{\prec}
+\providecommand{\gvect}{\succ}
+\providecommand{\leqscal}{\leq}
+\providecommand{\geqscal}{\geq}
+\providecommand{\leqvect}{\preceq}
+\providecommand{\geqvect}{\succeq}
+\providecommand{\onevect}{\mathbf{1}}
+\providecommand{\zerovect}{\mathbf{0}}
+\providecommand{\field}[1]{\mathbb{#1}}
+\providecommand{\C}{\field{C}}
+\providecommand{\R}{\field{R}}
+\newcommand{\Cspace}{\mathcal{Q}}
+\newcommand{\Uspace}{\mathcal{U}}
+\providecommand{\Fspace}{\Cspace_\text{free}}
+\providecommand{\Hcal}{$\mathcal{H}$}
+\providecommand{\Vcal}{$\mathcal{V}$}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\homog}{homog}
+\DeclareMathOperator{\domain}{dom}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\sign}{sgn}
+\providecommand{\polar}{\triangle}
+\providecommand{\ainner}{\underline{a}}
+\providecommand{\aouter}{\overline{a}}
+\providecommand{\binner}{\underline{b}}
+\providecommand{\bouter}{\overline{b}}
+\newcommand{\D}{\nobreakdash-\textsc{d}}
+%\newcommand{\Fspace}{\mathcal{F}}
+\providecommand{\Fspace}{\Cspace_\text{free}}
+\providecommand{\free}{\text{\{}\mathsf{free}\text{\}}}
+\providecommand{\iff}{\Leftrightarrow}
+\providecommand{\subinner}[1]{#1_{\text{inner}}}
+\providecommand{\subouter}[1]{#1_{\text{outer}}}
+\providecommand{\Ppoly}{\mathcal{X}}
+\providecommand{\Pproj}{\mathcal{Y}}
+\providecommand{\Pinner}{\subinner{\Pproj}}
+\providecommand{\Pouter}{\subouter{\Pproj}}
+\DeclareMathOperator{\argmax}{arg\,max}
+\providecommand{\Aineq}{B}
+\providecommand{\Aeq}{A}
+\providecommand{\bineq}{u}
+\providecommand{\beq}{t}
+\DeclareMathOperator{\area}{area}
+\newcommand{\contact}[1]{\Cspace_{#1}}
+\newcommand{\feasible}[1]{\Fspace_{#1}}
+\newcommand{\dd}{\; \mathrm{d}}
+\newcommand{\figwid}{0.22\columnwidth}
+\newcommand{\TRUE}{\textbf{true}}
+\newcommand{\FALSE}{\textbf{false}}
+\DeclareMathOperator{\atan2}{atan2}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+
+
+
+% paper title
+\title{ Exploration and Mapping with a Particle Swarm Controlled by Uniform Inputs on a Magnetic Setup}
+
+% You will get a Paper-ID when submitting a pdf file to the conference system
+\author{Arun Mahadev, Daniel Bao, and Aaron T. Becker} %<-this % stops a space
+%\thanks{} %\end thanks%
+
+\begin{document}
+	
+\begin{abstract}
+Magnetic manipulation is very simple with a bar magnet and some iron fillings or steel balls, but demonstrating precise control over weaker para-magnetic particles is harder but also has its rewards. This kind of control is required for medicinal applications in targeted drug delivery and boundary control as an alternative to traditional contrast agents. We show a 3D scale simulation for testing algorithms for complete mapping and implement a physical hardware setup using magnetic coils.
+
+Our previous algorithms for complete mapping using "frontier" or unknown boundary cells  implemented on a 2D matrix world, but there was potential for 3D expansion and physical demonstrations. With the different simulation environment, 3D design and the magnetic coil setup, more dynamic interactions can be introduced as well as continuous or polyhedral boundaries. The "unknown" world to explore is now laser acrylic and water instead of array values. These include wall friction, surface tension, and  hydrophobic interactions of the particles themselves.
+
+The 3D simulation expansion from the previous work shows that there isn't a tradeoff between mapping completeness and dimensions. Only the complexity of the map matters, which means that for the same number of free spaces on a 2D and 3D map, the map with the more complex shape will require more total moves to map with the ClosestFrontier algorithm from previous work. Complex shapes are highly branched and take many turns and loops which prevent synergistic exploration of the map.
+\end{abstract}
+	
+
+\end{document}
