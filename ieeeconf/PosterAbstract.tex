@@ -53,15 +53,19 @@ Exploration and Mapping with a Particle Swarm Controlled by Uniform Inputs on a 
 \section{Discussion}\label{sec:Discussion}
 	This research allows for precise control over weaker para-magnetic particles as well as a theoretical understanding of algorithmic efficiency in real world work spaces. Ultimately, medicinal applications in active targeted drug delivery and mapping vasculature as an alternative to traditional contrast agents are fields that can benefit from this research as well as more studies on non-invasive particle treatments. 
 \begin{figure}
-	%\vspace{30pt}
+	\vspace{-20pt}
 \begin{comment}
 	\includegraphics[height=0.2\paperheight]{3d1.png}
 	\caption{The 3D simulation is shown above with red blocks being the particles, blue being the frontier cells, and white being free explored cells.}
 \end{comment}
-	\includegraphics[height=0.2\paperheight]{10particles_3D.jpg}
-	\caption{Here are 10 particles that have completely explored the same work space shown in Fig. 1. As shown, the work space is the University of Houston's initials with four layers. The white blocks are the mapped free spaces and everything else is an obstacle.}
-	\includegraphics[height=0.2\paperheight]{10particles_final.jpg}
-	\caption{For an equivalent number of free cells in 2D, more moves were required by the ClosestFrontier Algorithm due to the increased complexity of this vascular system based off of a leaf tissue sample. The black blocks are the mapped obstacles, white blocks are the free spaces, and red blocks are the particles again.}
+	\includegraphics[width=0.15\textwidth]{3D_initial}
+	\includegraphics[width=0.15\textwidth]{3D_middle}
+	\includegraphics[width=0.15\textwidth]{3D_final}
+	\caption{Each picture is a snapshot of the mapping process at different stages from initialization to completion. The white blocks are the mapped free spaces and everything else is an obstacle.}
+	\includegraphics[height=0.18\paperheight]{10particles_3D.jpg}
+	\caption{This is another perspective of the completed workspace in Fig. 1. There are four layers for the particles to explore.}
+	\includegraphics[height=0.18\paperheight]{10particles_final.jpg}
+	\caption{For an equivalent number of free cells in 2D, more moves were required due to the increased complexity of this vascular system based off of a leaf tissue sample. The 2D simulation uses black blocks to represent boundary cells.}
 \end{figure}
 \bibliographystyle{IEEEtran}
 \bibliography{abstract}
