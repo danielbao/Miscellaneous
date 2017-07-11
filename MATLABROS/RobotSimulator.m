@@ -109,9 +109,9 @@ classdef RobotSimulator < handle
     
     properties 
         %Robot - Object representing a differential drive robot
-        Robot=zeros(1,200);
+        Robot(1,1)=DifferentialDriveRobot;
         %LaserSensor - Object representing the simulated range sensor
-        LaserSensor=zeros(1,200);
+        LaserSensor();
         %HasROSInterface - Indicates whether object has ros interface
         HasROSInterface = false
         %HasFigureWindow - Indicates whether object has GUI interface
@@ -121,7 +121,7 @@ classdef RobotSimulator < handle
         %PlotTrajectory - Indicates whether robot's trajectory is plotted.
         PlotTrajectory = false
         %NUM_Robots - number of robots planned to simulate!
-        N
+        N=1;
     end
     properties (Hidden)
         %Axes - Handle to main plot axes
@@ -172,29 +172,29 @@ classdef RobotSimulator < handle
         GlobalNode
         % ROS publishers
         %LaserScanPublisher - Publisher for /scan topic
-        LaserScanPublisher=zeros(1,200);        
+        LaserScanPublisher={};        
         %BumperStatePublisher - Publisher for /mobile_base/sensors/bumper topic
-        BumperStatePublisher=zeros(1,200);      
+        BumperStatePublisher={};      
         %VelCmdPublisher - Publisher for /mobile_base/commands/velocity messages
-        VelCmdPublisher=zeros(1,200);        
+        VelCmdPublisher={};        
         %OdometryPublisher - Publisher for /odom topic
-        OdometryPublisher=zeros(1,200);        
+        OdometryPublisher={};        
         %GroundTruthPosePublisher - Publisher for /ground_truth_pose topic
-        GroundTruthPosePublisher=zeros(1,200);        
+        GroundTruthPosePublisher={};        
         %TransformTree - Transformation tree
-        TransformTree=zeros(1,200);        
+        TransformTree={};        
         % ROS messages        
         %LaserScanMessage - Laser scan reading published on /scan
         %   Message type is sensor_msgs/LaserScan
-        LaserScanMessage=zeros(1,200);        
+        LaserScanMessage={};        
         %BumperStateMessage - std_msgs/Bool message indicating bumper / collision state
-        BumperStateMessage=zeros(1,200);        
+        BumperStateMessage={};        
         %LastVelocityCmd - Last valid velocity command that was received
         LastVelocityCmd = rosmessage('geometry_msgs/Twist')        
         %PoseMessage - nav_msgs/Odometry message for /odom and /ground_truth_pose topic
-        PoseMessage=zeros(1,200);        
+        PoseMessage={};        
         %TransformMessage - Transformation message
-        TransformMessage=zeros(1,200);        
+        TransformMessage={};        
         % ROS subscribers        
         %VelCmdSubscriber - Subscriber for /mobile_base/commands/velocity messages
         VelCmdSubscriber        
@@ -239,7 +239,7 @@ classdef RobotSimulator < handle
             examplesFilePath = 'SimulatorMaps.mat';
             exampleMaps = load(examplesFilePath);
             % Parse arguments to constructor
-            narginchk(0,2);
+            narginchk(0,3);
             switch nargin
                 case 0
                     % ExampleHelperRobotSimulator() syntax
@@ -267,17 +267,18 @@ classdef RobotSimulator < handle
                     % RobotSimulator(MAPNAME, MAPRESOLUTION) syntax
                     mapName = varargin{1};
                     mapResolution = varargin{2};
-                    mapName = validatestring(mapName, fieldnames(SimulatorMaps), 'RobotSimulator', 'mapName');
-                    validateattributes(mapResolution, {'double'}, {'nonempty','scalar'}, 'ExampleHelperRobotSimulator', 'mapResolution');
-                    obj.InternalMap = robotics.BinaryOccupancyGrid(SimulatorMaps.(mapName), mapResolution);
+                    mapName = validatestring(mapName, fieldnames(exampleMaps), 'RobotSimulator', 'mapName');
+                    validateattributes(mapResolution, {'double'}, {'nonempty','scalar'}, 'RobotSimulator', 'mapResolution');
+                    obj.InternalMap = robotics.BinaryOccupancyGrid(exampleMaps.(mapName), mapResolution);
                 case 3
                     % RobotSimulator(MAPNAME, MAPRESOLUTION, NUM_ROBOTS)
                     % syntax
                     mapName = varargin{1};
-                    mapResolution = varargin(2);
-                    mapName = validatestring(mapName, fieldnames(SimulatorMaps), 'RobotSimulator', 'mapName');
-                    obj.InternalMap = robotics.BinaryOccupancyGrid(SimulatorMaps.(mapName), mapResolution);
-                    N=varargin{3};
+                    mapResolution = varargin{2};
+                    mapName = validatestring(mapName, fieldnames(exampleMaps), 'RobotSimulator', 'mapName');
+                    validateattributes(mapResolution, {'double'}, {'nonempty','scalar'}, 'RobotSimulator', 'mapResolution');
+                    obj.InternalMap = robotics.BinaryOccupancyGrid(exampleMaps.(mapName), mapResolution);
+                    obj.N=varargin{3};
                 otherwise
                     error('RobotSimulator:InvalidInput',...
                         'Invalid number of arguments to ExampleHelperRobotSimulator.');
@@ -285,9 +286,9 @@ classdef RobotSimulator < handle
             
             % Initialize trajectory buffer
             obj.TrajectoryBuffer = NaN(obj.TrajectoryBufferCapacity,3);
-            for i=1:N
+            for i=1:obj.N
                 % Set initial state for robot
-                obj.Robot(i) = ExampleHelperSimDifferentialDriveRobot;
+                obj.Robot(i) = DifferentialDriveRobot;
                 obj.Robot(i).setPose(obj.InitialRobotState);
 
                 obj.PoseMessage(i) = rosmessage('nav_msgs/Odometry/robot_'+num2str(i));
@@ -446,8 +447,8 @@ classdef RobotSimulator < handle
             end
             
             % Retrieve laser readings at current robot pose
-            ranges = obj.LaserSensor.getReading(robotPose);
-            angles = obj.LaserSensor.AngleSweep.';
+            ranges = obj.LaserSensor(n).getReading(robotPose);
+            angles = obj.LaserSensor(n).AngleSweep.';
         end
         
         function randomizeLocation(obj)
@@ -478,12 +479,12 @@ classdef RobotSimulator < handle
             %   conditions. Set all velocity commands to zero as well.
             
             if obj.HasROSInterface && isvalid(obj.GlobalNode)
-                for i=1:obj.N
-                    % Make sure that robot velocity is set to zero
-                    velmsg = rosmessage(obj.VelCmdPublisher);
-                    send(obj.VelCmdPublisher, velmsg);
-                    % Reset the initial robot state
-                    obj.setRobotPose(obj.InitialRobotState);
+                % Make sure that robot velocity is set to zero
+                velmsg = rosmessage(obj.VelCmdPublisher);
+                send(obj.VelCmdPublisher, velmsg);
+                % Reset the initial robot state
+                for i=1:obj.N                   
+                    obj.setRobotPose(obj.InitialRobotState, i);
                     obj.TrajectoryBuffer = NaN(obj.TrajectoryBufferCapacity, 3);
                     obj.TrajectoryIndex = 0;
                 end
@@ -547,15 +548,15 @@ classdef RobotSimulator < handle
             else
                 obj.HasROSInterface = false;
                 
-                obj.VelCmdSubscriber = [];
-                obj.VelCmdPublisher = [];
-                obj.OdometryPublisher = [];
-                obj.LaserScanPublisher = [];
-                obj.BumperStatePublisher = [];
+                obj.VelCmdSubscriber = zeros(1,100);
+                obj.VelCmdPublisher = zeros(1,100);
+                obj.OdometryPublisher = zeros(1,100);
+                obj.LaserScanPublisher = zeros(1,100);
+                obj.BumperStatePublisher = zeros(1,100);
                 obj.ResetSimulationService = [];
                 obj.GazeboResetModelPosesService = [];
                 obj.RandomizeLocationService = [];
-                obj.TransformTree = [];
+                obj.TransformTree = zeros(1,100);
             end
         end
         
@@ -625,32 +626,32 @@ classdef RobotSimulator < handle
     %%
     methods (Access = private)
         
-        function newTwistMessage(obj, ~, msg)
+        function newTwistMessage(obj, ~, msg, n)
             %newTwistMessage A callback function that listens to
             % '/mobile_base/commands/velocity' and send velocity command
             % to robot whenever a new message is received.
             if isvalid(obj)
-                obj.Robot.setVelocityCommand(msg);
+                obj.Robot.setVelocityCommand(msg, n);
             end
         end
         
-        function setupLaserScanner(obj)
+        function setupLaserScanner(obj, n)
             %setupLaserScanner Setup the simulated laser scanner
             
-            obj.LaserSensor = ExampleHelperSimRangeSensor();
-            obj.LaserSensor.Map = obj.InternalMap;
-            senseAngles = obj.LaserSensor.AngleSweep;
+            obj.LaserSensor(n) = ExampleHelperSimRangeSensor();
+            obj.LaserSensor(n).Map = obj.InternalMap;
+            senseAngles = obj.LaserSensor(m).AngleSweep;
             
             % Set values for laser scan message that are the same for each
             % simulation step
-            msg = obj.LaserScanMessage;
-            msg.Header.FrameId = 'laser_scanner';
+            msg = obj.LaserScanMessage(n);
+            msg.Header.FrameId = 'laser_scanner/robot_'+num2str(n);
             msg.AngleMin = senseAngles(1);
             msg.AngleMax = senseAngles(end);
             msg.TimeIncrement = 0;
             msg.ScanTime = obj.Step;
             msg.RangeMin = 0;
-            msg.RangeMax = obj.LaserSensor.MaxRange;
+            msg.RangeMax = obj.LaserSensor(n).MaxRange;
         end
         
         function setupFigure(obj)
@@ -684,75 +685,78 @@ classdef RobotSimulator < handle
         end
         
         function updateKinematics(obj, ~, ~)
-            %updateKinematicsUpdate The kinematic model of the robot
-            % Save last pose
-            initialPose = obj.Robot.Pose;
-            obj.Robot.updateKinematics(obj.Step);
-            
-            % Update robot state
-            newPose = obj.Robot.Pose;
-            
-            % Check for collision with map
-            try
-                isOccupied = obj.InternalMap.getOccupancy([newPose(1) newPose(2)]);
-            catch
-                % Cannot go outside the world
-                isOccupied = true;
-            end
-            
-            if isOccupied
-                % Hit a obstacle. If we treat it as a "bounce" (i.e., move
-                % the robot backwards), that causes noisy bumper state, so
-                % don't update at all.
-                obj.BumperStateMessage.Data = true;
-                obj.Robot.setPose(initialPose);
-            else
-                obj.BumperStateMessage.Data = false;
-            end
-            
-            if obj.HasLaser
-                % Update range readings
-                pose = obj.Robot.Pose;
-                [obj.ScanRanges, obj.ScanAngles, obj.ScanCollisionLoc] = obj.LaserSensor.getReading(pose);
-            end
-            
-            % Check whether MATLAB ROS is still running.
-            % If the global node no longer exist, stop publishing ROS
-            % message
-            if obj.HasROSInterface
-                obj.HasROSInterface = isvalid(obj.GlobalNode);
-            end
-            
-            if obj.HasROSInterface
-                send(obj.BumperStatePublisher, obj.BumperStateMessage);
-                sendPoseMessage(obj,obj.OdometryPublisher, obj.getRobotOdom());
-                sendPoseMessage(obj,obj.GroundTruthPosePublisher, obj.getRobotPose());
-                
-                if obj.HasLaser
-                    % Update range reading
-                    % obj.LaserScanMessage.Header.Stamp = rostime('now');
-                    obj.LaserScanMessage.AngleIncrement = abs(angdiff(obj.ScanAngles(2), obj.ScanAngles(1)));
-                    obj.LaserScanMessage.RangeMax = obj.LaserSensor.MaxRange;
-                    obj.LaserScanMessage.Ranges = obj.ScanRanges;
-                    obj.LaserScanMessage.Header.Seq = obj.LaserScanMessage.Header.Seq + 1;
-                    obj.LaserScanMessage.Header.Stamp = rostime('now');
-                    send(obj.LaserScanPublisher, obj.LaserScanMessage);
+            for i=1:obj.N
+                %updateKinematicsUpdate The kinematic model of the robot
+                % Save last pose
+                initialPose = obj.Robot(i).Pose;
+                obj.Robot(i).updateKinematics(obj.Step);
+
+                % Update robot state
+                newPose = obj.Robot(i).Pose;
+
+                % Check for collision with map
+                try
+                    isOccupied = obj.InternalMap.getOccupancy([newPose(1) newPose(2)]);
+                catch
+                    % Cannot go outside the world
+                    isOccupied = true;
                 end
-                
-                % Send transform to tf
-                robotPose = obj.getRobotPose();
-                obj.TransformMessage.Transform.Translation.X = robotPose(1);
-                obj.TransformMessage.Transform.Translation.Y = robotPose(2);
-                quat = eul2quat([robotPose(3) 0 0], 'ZYX');
-                obj.TransformMessage.Transform.Rotation.W = quat(1);
-                obj.TransformMessage.Transform.Rotation.X = quat(2);
-                obj.TransformMessage.Transform.Rotation.Y = quat(3);
-                obj.TransformMessage.Transform.Rotation.Z = quat(4);
-                obj.TransformMessage.Header.Stamp = rostime('now');
-                obj.TransformTree.sendTransform(obj.TransformMessage);
+
+                if isOccupied
+                    % Hit a obstacle. If we treat it as a "bounce" (i.e., move
+                    % the robot backwards), that causes noisy bumper state, so
+                    % don't update at all.
+                    obj.BumperStateMessage.Data = true;
+                    obj.Robot(i).setPose(initialPose);
+                else
+                    obj.BumperStateMessage.Data = false;
+                end
+
+                if obj.HasLaser
+                    % Update range readings
+                    pose = obj.Robot(i).Pose;
+                    [obj.ScanRanges, obj.ScanAngles, obj.ScanCollisionLoc] = obj.LaserSensor(i).getReading(pose);
+                end
+
+                % Check whether MATLAB ROS is still running.
+                % If the global node no longer exist, stop publishing ROS
+                % message
+                if obj.HasROSInterface
+                    obj.HasROSInterface = isvalid(obj.GlobalNode);
+                end
+
+                if obj.HasROSInterface
+                    send(obj.BumperStatePublisher, obj.BumperStateMessage);
+                    sendPoseMessage(obj,obj.OdometryPublisher, obj.getRobotOdom());
+                    sendPoseMessage(obj,obj.GroundTruthPosePublisher, obj.getRobotPose());
+
+                    if obj.HasLaser
+                        % Update range reading
+                        % obj.LaserScanMessage.Header.Stamp = rostime('now');
+                        obj.LaserScanMessage(i).AngleIncrement = abs(angdiff(obj.ScanAngles(2), obj.ScanAngles(1)));
+                        obj.LaserScanMessage(i).RangeMax = obj.LaserSensor.MaxRange;
+                        obj.LaserScanMessage(i).Ranges = obj.ScanRanges;
+                        obj.LaserScanMessage(i).Header.Seq = obj.LaserScanMessage.Header.Seq + 1;
+                        obj.LaserScanMessage(i).Header.Stamp = rostime('now');
+                        send(obj.LaserScanPublisher, obj.LaserScanMessage);
+                    end
+
+                    % Send transform to tf
+                    robotPose = obj.getRobotPose(i);
+                    obj.TransformMessage(i).Transform.Translation.X = robotPose(1);
+                    obj.TransformMessage(i).Transform.Translation.Y = robotPose(2);
+                    quat = eul2quat([robotPose(3) 0 0], 'ZYX');
+                    obj.TransformMessage(i).Transform.Rotation.W = quat(1);
+                    obj.TransformMessage(i).Transform.Rotation.X = quat(2);
+                    obj.TransformMessage(i).Transform.Rotation.Y = quat(3);
+                    obj.TransformMessage(i).Transform.Rotation.Z = quat(4);
+                    obj.TransformMessage(i).Header.Stamp = rostime('now');
+                    obj.TransformTree(i).sendTransform(obj.TransformMessage(i));
+                end
+
+                obj.updateTrajectoryBuffer(obj.getRobotPose(i));
             end
             
-            obj.updateTrajectoryBuffer(obj.getRobotPose());
         end
         
         function updateTrajectoryBuffer(obj, pose)
