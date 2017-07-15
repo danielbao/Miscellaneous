@@ -1,5 +1,5 @@
 classdef DifferentialDriveRobot < handle
-    %ExampleHelperSimDifferentialDriveRobot Simulation of kinematic behavior of differential-drive robot
+    %DifferentialDriveRobot: Simulates of kinematic behavior of differential-drive robot
     %   This class is included only for demonstration purposes. The name of
     %   this class and its functionality may change without notice in a
     %   future release, or the class itself may be removed.
@@ -9,7 +9,7 @@ classdef DifferentialDriveRobot < handle
     %   It also defines some maximum allowable velocities
     %   that are representative of the TurtleBot 2 robot.
     %
-    %   ExampleHelperSimDifferentialDriveRobot properties:
+    %   DifferentialDriveRobot properties:
     %       Pose                - (Read-only) Current pose of robot [x, y, theta]
     %       LinearVelocity      - (Read-only) Current linear forward velocity of robot (in m/s)
     %       AngularVelocity     - (Read-only) Current angular velocity of robot (in rad/s)
@@ -18,7 +18,7 @@ classdef DifferentialDriveRobot < handle
     %       MaxAngularVelocity     - Maximum allowable angular velocity for robot (in rad/s)
     %
     %
-    %   ExampleHelperSimDifferentialDriveRobot methods:
+    %   DifferentialDriveRobot methods:
     %       setPose          - Set the pose of the robot
     %       updateKinematics - Propagate the kinematic model of the robot
     %       enableLimitedCommandTime - Enable velocity command timeout.
@@ -153,7 +153,7 @@ classdef DifferentialDriveRobot < handle
             % Update robot state accordingly
             obj.Pose(1) = obj.Pose(1) + dx;
             obj.Pose(2) = obj.Pose(2) + dy;
-            %obj.Pose(3) = robotics.internal.wrapToPi(obj.Pose(3) + dtheta);
+            obj.Pose(3) = robotics.internal.wrapToPi(obj.Pose(3) + dtheta);
         end
     end
     

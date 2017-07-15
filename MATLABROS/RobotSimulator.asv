@@ -525,7 +525,8 @@ classdef RobotSimulator < handle
 %             TransformTree(obj.N)=rostf;
 %             obj.TransformTree=TransformTree; %#ok<*PROPLC>
             if enableROS && ~isempty(obj.GlobalNode)
-                VelCmdSubscriber(obj.N) = rossubscriber('/mobile_base/commands/velocity','geometry_msgs/Twist');
+                VelCmdSubscriber(obj.N) = rossubscriber('/mobile_base/commands/velocity', 'geometry_msgs/Twist', ...
+                        @obj.newTwistMessage);
                 obj.VelCmdSubscriber=VelCmdSubscriber;
                 VelCmdPublisher(obj.N) = rospublisher(strcat('/mobile_base/commands/velocity/robot_',num2str(1)), 'geometry_msgs/Twist');
                 obj.VelCmdPublisher=VelCmdPublisher;
@@ -536,7 +537,7 @@ classdef RobotSimulator < handle
                 LaserScanPublisher(obj.N) = rospublisher(strcat('/scan/robot_',num2str(1)), 'sensor_msgs/LaserScan');
                 obj.LaserScanPublisher=LaserScanPublisher;
                 BumperStatePublisher(obj.N) = rospublisher(strcat('/mobile_base/sensors/bumper/robot_',num2str(1)), 'std_msgs/Bool');
-                obj.BumperStatePublisher=BumperStatePublisher; %#ok<*PROPLC>
+                obj.BumperStatePublisher=BumperStatePublisher;
                 % Create ROS subscribers and publishers                
                 for i=1:obj.N
                     obj.VelCmdSubscriber(i) = rossubscriber('/mobile_base/commands/velocity', 'geometry_msgs/Twist', ...
