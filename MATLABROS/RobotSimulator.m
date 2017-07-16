@@ -213,7 +213,7 @@ classdef RobotSimulator < handle
         %Figure - Handle to figure window
         Figure = []
         %RobotBodyHandle - Handle to robot body graphical representation
-        RobotBodyHandle = []       
+        RobotBodyHandle = []     
         %ScanLineHandles - Graphics handles for laser beam visualization
         ScanLineHandles = matlab.graphics.chart.primitive.Line.empty
         %ScanPointHandles - Graphics handles for laser end point visualization
@@ -287,6 +287,8 @@ classdef RobotSimulator < handle
             
             % Initialize trajectory buffer
             obj.TrajectoryBuffer = NaN(obj.TrajectoryBufferCapacity,3);
+%             RobotBodyHandle(obj.N)=struct;
+%             obj.RobotBodyHandle = RobotBodyHandle;
             Robot(obj.N)=DifferentialDriveRobot();
             obj.Robot=Robot;
             PoseMessage(obj.N) = rosmessage('nav_msgs/Odometry');
@@ -313,7 +315,7 @@ classdef RobotSimulator < handle
             
             setupLaserScanner(obj);
             obj.HasLaser = true;
-            
+            randomizeLocation(obj);
             % Start the two timing loops
             obj.KinematicsTimer = ExampleHelperROSTimer(obj.Step, ...
                 @obj.updateKinematics);
@@ -466,21 +468,22 @@ classdef RobotSimulator < handle
             %   randomizeLocation(OBJ) - Set the robots' position to a random
             %   location. This function ensures that the robot position is
             %   in free space.
-            
-            isOccupied = true;
-            iterations = obj.N;
-            
-            while isOccupied && iterations > 0
-                x = obj.InternalMap.XWorldLimits(1) + rand(1)*diff(obj.InternalMap.XWorldLimits);
-                y = obj.InternalMap.YWorldLimits(1) + rand(1)*diff(obj.InternalMap.YWorldLimits);
-                theta = rand(1)*pi - pi/2;
-                isOccupied = obj.InternalMap.getOccupancy([x y]);
-                iterations = iterations - 1;
-                obj.setRobotPose([x,y,theta], iterations);
+            for i=1:obj.N
+                isOccupied = true;
+                iterations = 100;
+                x=0;y=0;theta=0;
+                while isOccupied && iterations > 0
+                    x = obj.InternalMap.XWorldLimits(1) + rand(1)*diff(obj.InternalMap.XWorldLimits);
+                    y = obj.InternalMap.YWorldLimits(1) + rand(1)*diff(obj.InternalMap.YWorldLimits);
+                    theta = rand(1)*pi - pi/2;
+                    isOccupied = obj.InternalMap.getOccupancy([x y]);
+                    iterations = iterations - 1;                
+                end
+
+                % Update the initial robot state
+                obj.setRobotPose([x,y,theta], i);                
             end
             
-            % Update the initial robot state
-            %obj.setRobotPose([x,y,theta], n);
         end
         
         function resetSimulation(obj)
@@ -623,7 +626,8 @@ classdef RobotSimulator < handle
             hold(obj.Axes, 'on');
             title(obj.Axes, '');
             
-            obj.RobotBodyHandle = [];
+            RobotBodyHandle(obj.N)=fill(0,0,[1 1 1]); %#ok<*CPROPLC>
+            obj.RobotBodyHandle = RobotBodyHandle;
             obj.TrajectoryHandle = [];
             obj.ScanLineHandles = matlab.graphics.chart.primitive.Line.empty;
             obj.ScanPointHandles = matlab.graphics.chart.primitive.Line.empty;
@@ -824,16 +828,17 @@ classdef RobotSimulator < handle
         
         function plotRobot(obj)
             %plotRobot Plot robot
+            obj.RobotBodyHandle = gobjects(obj.N);
             for i=1:obj.N
                 x = obj.Robot(i).Pose(1);
                 y = obj.Robot(i).Pose(2);
                 theta = obj.Robot(i).Pose(3);
 
-                if isempty(obj.RobotBodyHandle) || ~isgraphics(obj.RobotBodyHandle)
+%                 if isempty(obj.RobotBodyHandle(i)) || ~isgraphics(obj.RobotBodyHandle(i))
                     currentMarkerColor = obj.RobotBodyFaceColor;
-                else
-                    currentMarkerColor = obj.RobotBodyHandle.FaceColor;
-                end
+%                 else
+%                     currentMarkerColor = obj.RobotBodyHandle(i).FaceColor;
+%                 end
 
                 if ~isempty(obj.BumperStateMessage(i)) && obj.BumperStateMessage(i).Data
                     % Bumping into an obstacle. Alternate the color of the
@@ -846,19 +851,19 @@ classdef RobotSimulator < handle
                 else
                     markerFaceColor = obj.RobotBodyFaceColor;
                 end
-
                 R = [cos(theta), -sin(theta); sin(theta), cos(theta)];
                 verticesPos = R * obj.RobotBodyTriangleVertices;
-
-                if isempty(obj.RobotBodyHandle) || ~isgraphics(obj.RobotBodyHandle)
-                    obj.RobotBodyHandle = fill(verticesPos(1,:).' + x, verticesPos(2,:).' + y, 'w','LineWidth', 1);
-                    obj.RobotBodyHandle.FaceColor = markerFaceColor;
+                %Must make sure that the RobotBody Handle isn't a graphics
+                %object yet?
+                if isempty(obj.RobotBodyHandle(i)) || ~isgraphics(obj.RobotBodyHandle(i))
+                    obj.RobotBodyHandle(i) = fill(verticesPos(1,:).' + x, verticesPos(2,:).' + y, 'w','LineWidth', 1);
+                    obj.RobotBodyHandle(i).FaceColor = markerFaceColor;
                 else
-                    obj.RobotBodyHandle.Vertices = [verticesPos(1,:).' + x, verticesPos(2,:).' + y];
-                    obj.RobotBodyHandle.FaceColor = markerFaceColor;
+                    obj.RobotBodyHandle(i).Vertices = [verticesPos(1,:).' + x, verticesPos(2,:).' + y];
+                    obj.RobotBodyHandle(i).FaceColor = markerFaceColor;
                 end
+                uistack(obj.RobotBodyHandle(i), 'top');
             end            
-            uistack(obj.RobotBodyHandle, 'top');
         end
         
         function plotLaser(obj)
@@ -868,7 +873,7 @@ classdef RobotSimulator < handle
                 y = obj.Robot(j).Pose(2);
 
                 % Update range reading
-                angles = obj.ScanAngles(j);
+                angles = obj.ScanAngles;
                 collisionLoc = obj.ScanCollisionLoc;
 
                 % If there are no existing plot handles, create them

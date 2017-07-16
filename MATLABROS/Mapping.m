@@ -1,3 +1,3 @@
-Simulator=RobotSimulator('simpleMap',2,2);
-enableROSInterface(Simulator, true);
-Simulator.LaserSensor.NumReadings=50;
+Simulator=RobotSimulator('HTree_1441',2,2);
+% enableROSInterface(Simulator, true);
+% Simulator.LaserSensor.NumReadings=50;
