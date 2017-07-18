@@ -22,8 +22,8 @@
 \BIBdecl
 
 \bibitem{AAM}
-A.~Mahadev and A.~B. D.~Krupke, S. P.~Fekete, ``Mapping, foraging, and coverage
-  with a particle swarm controlled by uniform inputs,'' \emph{International
-  Conference on Intelligent Robots and Systems}, 2017.
+A.~Mahadev, D.~Krupke, S.~P. Fekete, and A.~T. Becker, ``Mapping, foraging, and
+  coverage with a particle swarm controlled by uniform inputs,''
+  \emph{International Conference on Intelligent Robots and Systems}, 2017.
 
 \end{thebibliography}

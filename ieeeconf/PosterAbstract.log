@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.7.3)  7 JUL 2017 11:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.7.3)  17 JUL 2017 18:44
 entering extended mode
 **./PosterAbstract.tex
 (PosterAbstract.tex
@@ -318,36 +318,44 @@ LaTeX Font Info:    Try loading font information for OT1+pcr on input line 42.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-<3D_initial.jpg, id=22, 1124.2pt x 843.15pt>
+<3D_initial.jpg, id=22, 248.05171pt x 175.78172pt>
 File: 3D_initial.jpg Graphic file (type jpg)
  <use 3D_initial.jpg>
-Package pdftex.def Info: 3D_initial.jpg used on input line 61.
-(pdftex.def)             Requested size: 75.8804pt x 56.90373pt.
+Package pdftex.def Info: 3D_initial.jpg used on input line 63.
+(pdftex.def)             Requested size: 75.8804pt x 53.77293pt.
 
-<3D_middle.jpg, id=23, 1124.2pt x 843.15pt>
+<3D_middle.jpg, id=23, 236.75954pt x 210.03468pt>
 File: 3D_middle.jpg Graphic file (type jpg)
  <use 3D_middle.jpg>
-Package pdftex.def Info: 3D_middle.jpg used on input line 62.
-(pdftex.def)             Requested size: 75.8804pt x 56.90373pt.
+Package pdftex.def Info: 3D_middle.jpg used on input line 64.
+(pdftex.def)             Requested size: 75.8804pt x 67.31502pt.
 
-<3D_final.jpg, id=24, 1124.2pt x 843.15pt>
+<3D_final.jpg, id=24, 199.11891pt x 246.1697pt>
 File: 3D_final.jpg Graphic file (type jpg)
  <use 3D_final.jpg>
-Package pdftex.def Info: 3D_final.jpg used on input line 63.
-(pdftex.def)             Requested size: 75.8804pt x 56.90373pt.
+Package pdftex.def Info: 3D_final.jpg used on input line 65.
+(pdftex.def)             Requested size: 50.59209pt x 62.54518pt.
 
-<10particles_3D.jpg, id=25, 1124.2pt x 843.15pt>
-File: 10particles_3D.jpg Graphic file (type jpg)
- <use 10particles_3D.jpg>
-Package pdftex.def Info: 10particles_3D.jpg used on input line 65.
-(pdftex.def)             Requested size: 190.78554pt x 143.08876pt.
+<2D_720_initial.jpg, id=25, 116.30952pt x 130.98938pt>
+File: 2D_720_initial.jpg Graphic file (type jpg)
 
-<10particles_final.jpg, id=26, 562.1pt x 421.575pt>
+<use 2D_720_initial.jpg>
+Package pdftex.def Info: 2D_720_initial.jpg used on input line 71.
+(pdftex.def)             Requested size: 79.50185pt x 89.53929pt.
+
+<10particles_final.jpg, id=26, 116.30952pt x 130.98938pt>
 File: 10particles_final.jpg Graphic file (type jpg)
 
 <use 10particles_final.jpg>
-Package pdftex.def Info: 10particles_final.jpg used on input line 67.
-(pdftex.def)             Requested size: 190.78554pt x 143.08876pt.
+Package pdftex.def Info: 10particles_final.jpg used on input line 72.
+(pdftex.def)             Requested size: 79.50185pt x 89.53929pt.
+
+<Optimized-Workspace.jpg, id=27, 855.195pt x 677.53125pt>
+File: Optimized-Workspace.jpg Graphic file (type jpg)
+
+<use Optimized-Workspace.jpg>
+Package pdftex.def Info: Optimized-Workspace.jpg used on input line 75.
+(pdftex.def)             Requested size: 100.3484pt x 79.50185pt.
  (PosterAbstract.bbl)
 
 ** Conference Paper **
@@ -360,35 +368,35 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 73.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 83.
 [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
- <./3D_initial.jpg> <./3D_middle.jpg> <./3D_final.jpg> <./10particles_3D.jpg> <
-./10particles_final.jpg>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 73.
-(PosterAbstract.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 73.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 73.
+ <./3D_initial.jpg> <./3D_middle.jpg> <./3D_final.jpg> <./2D_720_initial.jpg> <
+./10particles_final.jpg> <./Optimized-Workspace.jpg>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 83.
+ (PosterAbstract.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 83.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 83.
 Package rerunfilecheck Info: File `PosterAbstract.out' has not changed.
 (rerunfilecheck)             Checksum: 2F506CD8949CFB56F01CF1C68E22E448;196.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 73.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 83.
  ) 
 Here is how much of TeX's memory you used:
- 5754 strings out of 493323
- 88043 string characters out of 3139067
- 181192 words of memory out of 3000000
- 9246 multiletter control sequences out of 15000+200000
- 32649 words of font info for 66 fonts, out of 3000000 for 9000
+ 5760 strings out of 493323
+ 88184 string characters out of 3139067
+ 179205 words of memory out of 3000000
+ 9250 multiletter control sequences out of 15000+200000
+ 33785 words of font info for 67 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,8n,28p,796b,309s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 28i,8n,28p,768b,309s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
 KTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/
 type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/u
 tmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PosterAbstract.pdf (1 page, 288968 bytes).
+Output written on PosterAbstract.pdf (1 page, 1031162 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
+ 61 PDF objects out of 1000 (max. 8388607)
  10 named destinations out of 1000 (max. 500000)
- 58 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 63 words of extra memory for PDF output out of 10000 (max. 10000000)
 
