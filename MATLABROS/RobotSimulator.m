@@ -19,11 +19,11 @@ classdef RobotSimulator < handle
     %   MAPRESOLUTION (in cells / meter). By default, the resolution is 2
     %   cells / meter.
     %
-    %   OBJ = ExampleHelperRobotSimulator(BOG) loads the map defined by the
+    %   OBJ = RobotSimulator(BOG) loads the map defined by the
     %   robotics.BinaryOccupancyGrid object BOG into the simulator.
     %
     %   Notes:
-    %   1) ExampleHelperRobotSimulator's ROS interface expects MATLAB ROS
+    %   1) RobotSimulator's ROS interface expects MATLAB ROS
     %   functionality to be initialized. You can do this by calling ROSINIT
     %   (for a local ROS master) or invoking ROSINIT(MASTER_IP) to connect
     %   to an external master.
@@ -35,16 +35,16 @@ classdef RobotSimulator < handle
     %   simulated robot via ROS. The following topics and services are
     %   handled by the simulator:
     %
-    %   ExampleHelperRobotSimulator Published Topics:
+    %   RobotSimulator Published Topics:
     %       /odom - Current robot odometry information (pose and velocity)
     %       /scan - The data from the simulated laser scanner
     %       /mobile_base/sensors/bumper - Indicates if the robot hits an obstacle
     %       /ground_truth_pose - Ground truth robot pose
     %
-    %   ExampleHelperRobotSimulator Subscribed Topics:
+    %   RobotSimulator Subscribed Topics:
     %       /mobile_base/commands/velocity - Velocity commands to the robot
     %
-    %   ExampleHelperRobotSimulator Services:
+    %   RobotSimulator Services:
     %       /sim/new_robot_pose - Move the robot into a new starting pose
     %       /sim/reset_poses    - Reset the pose of the robot to the last known starting pose
     %       /gazebo/reset_world - Reset the pose of the robot to the last known starting pose
@@ -52,7 +52,7 @@ classdef RobotSimulator < handle
     %   Some other behavior of the simulator can be changed by accessing
     %   various properties.
     %
-    %   ExampleHelperRobotSimulator properties:
+    %   RobotSimulator properties:
     %
     %       Map             - Map to be used by the robot
     %       Robot           - Object representing a differential drive robot.
@@ -62,7 +62,7 @@ classdef RobotSimulator < handle
     %       HasLaser        - Indicates whether simulated robot has Laser sensor.
     %       PlotTrajectory  - Indicates whether robot's trajectory is plotted.
     %
-    %   ExampleHelperRobotSimulator methods:
+    %   RobotSimulator methods:
     %
     %       enableLaser        - Setup the laser sensor interface.
     %       enableROSInterface - Setup ROS publisher, subscriber and service server.
@@ -215,9 +215,9 @@ classdef RobotSimulator < handle
         %RobotBodyHandle - Handle to robot body graphical representation
         RobotBodyHandle = []     
         %ScanLineHandles - Graphics handles for laser beam visualization
-        ScanLineHandles = matlab.graphics.chart.primitive.Line.empty
+        ScanLineHandles
         %ScanPointHandles - Graphics handles for laser end point visualization
-        ScanPointHandles = matlab.graphics.chart.primitive.Line.empty
+        ScanPointHandles
         %TrajectoryHandle - Graphics handle for robot's trajectory
         TrajectoryHandle = []
         %RandomLocationButton - Button for randomizing robot location
@@ -227,7 +227,7 @@ classdef RobotSimulator < handle
     end
     methods
         function obj = RobotSimulator(varargin)
-            %ExampleHelperRobotSimulator Constructor for simulator object
+            %RobotSimulator Constructor for simulator object
             %   Please check the class definition for details.
             obj.MyFigureTag = RobotSimulator.FigureTag;
             if ~isempty(findobj('type', 'figure', 'tag', obj.MyFigureTag))
@@ -243,7 +243,7 @@ classdef RobotSimulator < handle
             narginchk(0,3);
             switch nargin
                 case 0
-                    % ExampleHelperRobotSimulator() syntax
+                    % RobotSimulator() syntax
                     % Use default values
                     mapName = 'emptyMap';
                     mapResolution = 2;
@@ -282,7 +282,7 @@ classdef RobotSimulator < handle
                     obj.N=varargin{3};
                 otherwise
                     error('RobotSimulator:InvalidInput',...
-                        'Invalid number of arguments to ExampleHelperRobotSimulator.');
+                        'Invalid number of arguments to RobotSimulator.');
             end
             
             % Initialize trajectory buffer
@@ -315,7 +315,7 @@ classdef RobotSimulator < handle
             
             setupLaserScanner(obj);
             obj.HasLaser = true;
-            randomizeLocation(obj);
+%            randomizeLocation(obj);
             % Start the two timing loops
             obj.KinematicsTimer = ExampleHelperROSTimer(obj.Step, ...
                 @obj.updateKinematics);
@@ -400,7 +400,7 @@ classdef RobotSimulator < handle
             pose = double(pose);
             obj.Robot(n).setPose(pose);
             obj.InitialRobotState = reshape(pose,1,3);
-            %[obj.ScanRanges, obj.ScanAngles, obj.ScanCollisionLoc] = obj.LaserSensor(n).getReading(obj.getRobotPose(obj, n));
+            [obj.ScanRanges(:,n), obj.ScanAngles(:,n), obj.ScanCollisionLoc(:,:,n)] = obj.LaserSensor(n).getReading(pose);
             obj.TrajectoryBuffer = NaN(obj.TrajectoryBufferCapacity, 3);
             obj.TrajectoryIndex = 0;
         end
@@ -526,31 +526,24 @@ classdef RobotSimulator < handle
                 end
             end
 %             TransformTree(obj.N)=rostf;
-%             obj.TransformTree=TransformTree; %#ok<*PROPLC>
+            obj.TransformTree=rostf; %#ok<*PROPLC>
             if enableROS && ~isempty(obj.GlobalNode)
-                VelCmdSubscriber(obj.N) = rossubscriber('/mobile_base/commands/velocity','geometry_msgs/Twist');
-                obj.VelCmdSubscriber=VelCmdSubscriber;
-                VelCmdPublisher(obj.N) = rospublisher(strcat('/mobile_base/commands/velocity/robot_',num2str(1)), 'geometry_msgs/Twist');
-                obj.VelCmdPublisher=VelCmdPublisher;
-                OdometryPublisher(obj.N) = rospublisher(strcat('/odom/robot_',num2str(1)), 'nav_msgs/Odometry');
-                obj.OdometryPublisher=OdometryPublisher;
-                GroundTruthPosePublisher(obj.N) = rospublisher(strcat('/ground_truth_pose/robot_',num2str(1)), 'nav_msgs/Odometry');
-                obj.GroundTruthPosePublisher=GroundTruthPosePublisher;
-                LaserScanPublisher(obj.N) = rospublisher(strcat('/scan/robot_',num2str(1)), 'sensor_msgs/LaserScan');
-                obj.LaserScanPublisher=LaserScanPublisher;
-                BumperStatePublisher(obj.N) = rospublisher(strcat('/mobile_base/sensors/bumper/robot_',num2str(1)), 'std_msgs/Bool');
-                obj.BumperStatePublisher=BumperStatePublisher; %#ok<*PROPLC>
                 % Create ROS subscribers and publishers                
                 for i=1:obj.N
-                    obj.VelCmdSubscriber(i) = rossubscriber('/mobile_base/commands/velocity', 'geometry_msgs/Twist', ...
+                    VelCmdSubscriber(i) = rossubscriber(strcat('/mobile_base/commands/velocity/robot_',num2str(i)), 'geometry_msgs/Twist', ...
                         @obj.newTwistMessage);
-                    obj.VelCmdPublisher(i) = rospublisher(strcat('/mobile_base/commands/velocity/robot_',num2str(i)), 'geometry_msgs/Twist');
-                    obj.OdometryPublisher(i) = rospublisher(strcat('/odom/robot_',num2str(i)), 'nav_msgs/Odometry');
-                    obj.GroundTruthPosePublisher(i) = rospublisher(strcat('/ground_truth_pose/robot_',num2str(i)), 'nav_msgs/Odometry');
-                    obj.LaserScanPublisher(i) = rospublisher(strcat('/scan/robot_',num2str(i)), 'sensor_msgs/LaserScan');
-                    obj.BumperStatePublisher(i) = rospublisher(strcat('/mobile_base/sensors/bumper/robot_',num2str(i)), 'std_msgs/Bool');
-                    obj.TransformTree = rostf;                   
-                end                           
+                    VelCmdPublisher(i) = rospublisher(strcat('/mobile_base/commands/velocity/robot_',num2str(i)), 'geometry_msgs/Twist');
+                    OdometryPublisher(i) = rospublisher(strcat('/odom/robot_',num2str(i)), 'nav_msgs/Odometry');
+                    GroundTruthPosePublisher(i) = rospublisher(strcat('/ground_truth_pose/robot_',num2str(i)), 'nav_msgs/Odometry');
+                    LaserScanPublisher(i) = rospublisher(strcat('/scan/robot_',num2str(i)), 'sensor_msgs/LaserScan');
+                    BumperStatePublisher(i) = rospublisher(strcat('/mobile_base/sensors/bumper/robot_',num2str(i)), 'std_msgs/Bool');                   
+                end
+                obj.VelCmdSubscriber=VelCmdSubscriber;
+                obj.OdometryPublisher=OdometryPublisher;
+                obj.GroundTruthPosePublisher=GroundTruthPosePublisher;
+                obj.LaserScanPublisher=LaserScanPublisher;
+                obj.BumperStatePublisher=BumperStatePublisher;
+                
                 try
                     % Create services for resetting the simulation
                     % Both /sim/reset_poses and /gazebo/reset_world services will
@@ -629,11 +622,9 @@ classdef RobotSimulator < handle
             RobotBodyHandle(obj.N)=fill(0,0,[1 1 1]); %#ok<*CPROPLC>
             obj.RobotBodyHandle = RobotBodyHandle;
             obj.TrajectoryHandle = [];
-            obj.ScanLineHandles = matlab.graphics.chart.primitive.Line.empty;
-            obj.ScanPointHandles = matlab.graphics.chart.primitive.Line.empty;
-            
+            obj.ScanLineHandles = gobjects(obj.N);
+            obj.ScanPointHandles = gobjects(obj.N);
             obj.plotRobot();
-            
             obj.LaserSensor.Map = obj.InternalMap;
         end
         
@@ -646,25 +637,33 @@ classdef RobotSimulator < handle
     %%
     methods (Access = private)
         
-        function newTwistMessage(obj, ~, msg, n)
+        function newTwistMessage(obj, ~, msg)
             %newTwistMessage A callback function that listens to
             % '/mobile_base/commands/velocity' and send velocity command
             % to robot whenever a new message is received.
             if isvalid(obj)
-                obj.Robot(n).setVelocityCommand(msg);
+                for i=1:obj.N
+                    obj.Robot(i).setVelocityCommand(msg);
+                end
             end
         end
         
         function setupLaserScanner(obj)
             %setupLaserScanner Setup the simulated laser scanner
-            LaserSensor(obj.N)=ExampleHelperSimRangeSensor();
+            LaserSensor(obj.N)=SimRangeSensor();
             obj.LaserSensor=LaserSensor; 
-%             ScanAngles(obj.N)=3.14;
-%             obj.ScanAngles=ScanAngles;
-%             ScanRanges(obj.N)=3.14;
-%             obj.ScanRanges=ScanRanges; %#ok<*PROP>
+            N_Laser=obj.LaserSensor(obj.N).NumReadings;
+            ScanAngles=zeros(N_Laser,obj.N,1);
+            obj.ScanAngles=ScanAngles;
+            ScanRanges=zeros(N_Laser,obj.N,1);
+            obj.ScanRanges=ScanRanges;
+            ScanCollisionLoc=zeros(N_Laser,obj.N,2);
+            obj.ScanCollisionLoc=ScanCollisionLoc;
+            obj.ScanLineHandles=gobjects(obj.N);
+            obj.ScanPointHandles=gobjects(obj.N);
+             %#ok<*PROP>
             for i=1:obj.N
-                obj.LaserSensor(i) = ExampleHelperSimRangeSensor();
+                obj.LaserSensor(i) = SimRangeSensor();
                 obj.LaserSensor(i).Map = obj.InternalMap;
                 senseAngles = obj.LaserSensor(i).AngleSweep;  
                 % Set values for laser scan message that are the same for each
@@ -741,7 +740,7 @@ classdef RobotSimulator < handle
                 if obj.HasLaser
                     % Update range readings
                     pose = obj.Robot(i).Pose;                    
-                    %[obj.ScanRanges, obj.ScanAngles, obj.ScanCollisionLoc] = obj.LaserSensor(i).getReading(pose);
+                    [obj.ScanRanges(:,i), obj.ScanAngles(:,i), obj.ScanCollisionLoc(:,:,i)] = obj.LaserSensor(i).getReading(pose);
                 end
 
                 % Check whether MATLAB ROS is still running.
@@ -754,17 +753,17 @@ classdef RobotSimulator < handle
                 if obj.HasROSInterface
                     %Changed for multi-robot systems
                     send(obj.BumperStatePublisher(i), obj.BumperStateMessage(i));
-                    sendPoseMessage(obj,obj.OdometryPublisher(i), obj.getRobotOdom(obj, i), i);
-                    sendPoseMessage(obj,obj.GroundTruthPosePublisher(i), obj.getRobotPose(obj, i), i);
+                    sendPoseMessage(obj,obj.OdometryPublisher(i), obj.getRobotOdom(i), i);
+                    sendPoseMessage(obj,obj.GroundTruthPosePublisher(i), obj.getRobotPose(i), i);
 
                     if obj.HasLaser
                         % Update range reading
-                        % obj.LaserScanMessage.Header.Stamp = rostime('now');
-                        obj.LaserScanMessage(i).AngleIncrement = abs(angdiff(obj.ScanAngles(2), obj.ScanAngles(1)));
+                        obj.LaserScanMessage(i).Header.Stamp = rostime('now');
+                        obj.LaserScanMessage(i).AngleIncrement = abs(angdiff(obj.ScanAngles(2,i), obj.ScanAngles(1,i)));
                         % Maybe we need to change the scanAngles to have
                         % values for all robots
                         obj.LaserScanMessage(i).RangeMax = obj.LaserSensor(i).MaxRange;
-                        obj.LaserScanMessage(i).Ranges = obj.ScanRanges(i);
+                        obj.LaserScanMessage(i).Ranges = obj.ScanRanges(:,i);
                         obj.LaserScanMessage(i).Header.Seq = obj.LaserScanMessage(i).Header.Seq + 1;
                         obj.LaserScanMessage(i).Header.Stamp = rostime('now');
                         send(obj.LaserScanPublisher(i), obj.LaserScanMessage(i));
@@ -780,7 +779,7 @@ classdef RobotSimulator < handle
                     obj.TransformMessage(i).Transform.Rotation.Y = quat(3);
                     obj.TransformMessage(i).Transform.Rotation.Z = quat(4);
                     obj.TransformMessage(i).Header.Stamp = rostime('now');
-                    obj.TransformTree(i).sendTransform(obj.TransformMessage(i));
+                    obj.TransformTree.sendTransform(obj.TransformMessage(i));
                 end
 
                 obj.updateTrajectoryBuffer(obj.getRobotPose(i));
@@ -809,6 +808,7 @@ classdef RobotSimulator < handle
         function updatePlot(obj, ~, ~)
             %updatePlot Update the figure window with current robot
             %   Also plot the simulated range sensor rays.
+            % Seems OK for the multi-robot stuff
             if ~isgraphics(obj.Axes)
                 return
             end
@@ -828,6 +828,9 @@ classdef RobotSimulator < handle
         
         function plotRobot(obj)
             %plotRobot Plot robot
+            %Needs modification to support redrawing of the robot objects
+            %once they are randomized and occasional robots that do get
+            %stuck on the origin
             obj.RobotBodyHandle = gobjects(obj.N);
             for i=1:obj.N
                 x = obj.Robot(i).Pose(1);
@@ -869,16 +872,18 @@ classdef RobotSimulator < handle
         function plotLaser(obj)
             for j=1:obj.N
                 %plotLaser Plot laser readings
+                %Needs a way to allocate array when there is a CollisionLoc
+                %object required
                 x = obj.Robot(j).Pose(1);
                 y = obj.Robot(j).Pose(2);
 
                 % Update range reading
-                angles = obj.ScanAngles;
-                collisionLoc = obj.ScanCollisionLoc;
+                angles = obj.ScanAngles(:,j);
+                collisionLoc = obj.ScanCollisionLoc(:,:,j);
 
                 % If there are no existing plot handles, create them
-                if any(~isgraphics(obj.ScanLineHandles)) || isempty(obj.ScanLineHandles)
-                    obj.ScanLineHandles = plot(obj.Axes, [x 0], [y 0], 'b');
+                if any(~isgraphics(obj.ScanLineHandles(j))) || isempty(obj.ScanLineHandles(j))
+                    obj.ScanLineHandles(j) = plot(obj.Axes, [x 0], [y 0], 'b');
                 end
 
                 xplot = zeros(1, 3*length(angles));
@@ -888,11 +893,11 @@ classdef RobotSimulator < handle
                     idx2 = idx1+1;
                     idx3 = idx2+1;
 
-                    xplot(idx1:idx3) = [x collisionLoc(i,1) NaN];
-                    yplot(idx1:idx3) = [y collisionLoc(i,2) NaN];
+                    xplot(idx1:idx3) = [x collisionLoc(1) NaN];
+                    yplot(idx1:idx3) = [y collisionLoc(2) NaN];
                 end
-                obj.ScanLineHandles.XData = xplot;
-                obj.ScanLineHandles.YData = yplot;
+                obj.ScanLineHandles(j).XData = xplot;
+                obj.ScanLineHandles(j).YData = yplot;
             end            
         end
         
@@ -933,7 +938,7 @@ classdef RobotSimulator < handle
             q = eul2quat([theta 0 0]);
             
             % Get orientation handle and assign values
-            orientation = obj.PoseMessage.Pose.Pose.Orientation;
+            orientation = obj.PoseMessage(n).Pose.Pose.Orientation;
             orientation.X = q(2);
             orientation.Y = q(3);
             orientation.Z = q(4);
@@ -947,7 +952,7 @@ classdef RobotSimulator < handle
             % Publish the pose message
             header = obj.PoseMessage(n).Header;
             header.Seq = header.Seq + 1;
-            send(publisher, obj.PoseMessage);
+            send(publisher, obj.PoseMessage(n));
         end
         
         function response = resetSimulationServiceCallback(obj, ~, ~, response)
@@ -961,7 +966,7 @@ classdef RobotSimulator < handle
             %randomizeLocationServiceCallback Executed when service call to /sim/new_robot_pose occurs
             
             % Randomize location of robot
-            obj.randomizeLocation;
+            obj.randomizeLocation();
         end
     end
     
