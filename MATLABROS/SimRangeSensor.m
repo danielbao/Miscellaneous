@@ -61,9 +61,9 @@ classdef SimRangeSensor < robotics.algs.internal.GridAccess & handle
     
     methods
         function obj = SimRangeSensor()
-            %ExampleHelperSimRangeSensor Constructor for range sensor object
-            
-            obj.AngleSweep = linspace(-pi/2, pi/2, obj.NumReadings);
+            %SimRangeSensor Constructor for range sensor object
+            % Changed AngleSweep to model a omnisensor "collision" detector
+            obj.AngleSweep = linspace(-pi, pi, obj.NumReadings);
         end
         
         function [ranges, angles, collisionLoc] = getReading(obj, robotPose)
