@@ -20,33 +20,33 @@ function [movecount,k,nodecount] = ClosestFrontier3D(k,itr)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global G;
 if nargin<1
-    k = 10;%num particles
+    k = 1000;%num particles
     itr=1;
 end
 vox_sz = [1,1,1]; %length of cube sides
 G.fig = figure(1);
 set(gcf,'Renderer','OpenGL');
-G.mapnum =27;%22;
+G.mapnum =30;%22;
 G.movecount = 0;
 G.movetyp = [-1,0,0;0,1,0;1,0,0;0,-1,0;0,0,1;0,0,-1;];
 movecount=G.movecount;
 G.drawflag=1; % Default 1, draw G.fig 'on'. Set 0 for draw G.fig 'off'.
-G.videoflag=0;
+G.videoflag=1;
 clc
 %% Making a video demonstration. makemymovie gets the current frame of imge and adds to video file
-% format compact
-% % MOVIE_NAME =['Thee7',num2str(G.mapnum),'_',num2str(k),'robots','_video']; %Change video name here
-% writerObj = VideoWriter(MOVIE_NAME,'MPEG-4');%http://www.mathworks.com/help/matlab/ref/videowriterclass.html
-% set(writerObj,'Quality',100);
-% writerObj.FrameRate=30;
-% open(writerObj);
-%     function makemymovie()% Call after each frame is generated
-%         if G.videoflag==1
-%             figure(G.fig)
-%             F = getframe(G.fig);
-%             writeVideo(writerObj,F.cdata);
-%         end
-%     end
+format compact
+MOVIE_NAME =['Leaf_Mapping_3D',num2str(G.mapnum),'_',num2str(k),'robots','_video']; %Change video name here
+writerObj = VideoWriter(MOVIE_NAME,'MPEG-4');%http://www.mathworks.com/help/matlab/ref/videowriterclass.html
+set(writerObj,'Quality',100);
+writerObj.FrameRate=30;
+open(writerObj);
+    function makemymovie()% Call after each frame is generated
+        if G.videoflag==1
+            figure(G.fig)
+            F = getframe(G.fig);
+            writeVideo(writerObj,F.cdata);
+        end
+    end
 %% Setup map, matrices and initite mapping
 [G.obstacle_pos,G.free,G.robvec,G.Moves] = SetupWorld(G.mapnum);
 set(G.fig ,'KeyPressFcn',@keyhandler,'Name','Massive Control','color','w')
@@ -72,7 +72,7 @@ axis equal
 axis tight
 updateTitle() %Update the values displayed in the title
 hold on
-% makemymovie()
+ makemymovie()
 
 
 
@@ -80,12 +80,12 @@ hold on
 CF() % Closest Frontier mapping algorithm
  for rest=1:30
       view([-80-rest/3, 30+rest*2]);
-%             makemymovie()
+            makemymovie()
            
  end
         for rest=1:60
       view([-90, 90]);
-%             makemymovie()
+            makemymovie()
            
         end
 %% CF repeatedly moves particles to frontier cells until there are no more frontier cells left
@@ -98,18 +98,18 @@ CF() % Closest Frontier mapping algorithm
             steps = min(inf,numel(moveSeq));
             for mvIn =1:steps
                 moveto(moveSeq(mvIn)); %Implement moves on all particles
-%                 updateTitle()
+                updateTitle()
                 nodecount(iter)=nnz(frontier_exp);
                 iter=iter+1;
-%                 makemymovie()
+                makemymovie()
 %                 if G.movecount==100
 %                 pause()
 %                 end
             end %end DFS
         end
-%         for i=1:5
-%             makemymovie()
-%         end
+        for i=1:5
+            makemymovie()
+        end
         
         
     end
@@ -204,22 +204,11 @@ CF() % Closest Frontier mapping algorithm
             updateMap()
             updateTitle()
             if G.drawflag==1
-%                 drawcirc()
+%                  drawcirc()
             end
             drawnow
-%             makemymovie()
+            makemymovie()
         end
-    end
-%% Drawing scatter circles in the location of particles
-    function drawcirc()
-        h=scatter(G.robscaty,G.robscatx,'r','filled');
-        currentunits = get(gca,'Units');
-        set(gca, 'Units', 'Points');
-        axpos = get(gca,'Position');
-        set(gca, 'Units', currentunits);
-        markerWidth = .8/diff(xlim)*axpos(3); % Calculate Marker width in points
-        set(h,'SizeData', markerWidth^2)
-        drawnow
     end
 %% Updating the map
     function updateMap()

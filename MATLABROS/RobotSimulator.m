@@ -437,7 +437,7 @@ classdef RobotSimulator < handle
             % Set velocity commands for robot. They will be executed in the
             % next simulation loop.
             for i=1:obj.N
-                robotPose=obj.getRobotPose();
+                robotPose=obj.getRobotPose(i);
                 robotPose(3)=omega;
                 obj.Robot(i).setPose(robotPose);
                 obj.Robot(i).setVelocityCommand([v, 0]);
@@ -605,7 +605,27 @@ classdef RobotSimulator < handle
                 rethrow(ex);
             end
         end
-        
+        function keyhandler(src,evnt) %#ok<INUSL>
+            %Teleoperative Driving
+            %Doesn't use subscribers or publishers
+            %Uses the drive() function to update the robots
+            key=evnt.Key;
+            v=1;
+            omega=pi/2;
+            if strcmp(key,'leftarrow') || strcmp(key,'l')|| strcmp(key,'1')
+                %Move Left
+                omega = pi;
+            elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')
+                %Move Right
+                omega = 0;
+            elseif strcmp(key,'uparrow')|| strcmp(key,'u')|| strcmp(key,'3')
+                %Move Up
+                omega = pi/2;
+            elseif strcmp(key,'downarrow')|| strcmp(key,'d') || strcmp(key,'4')
+                omega = 3*pi/2;
+            end
+            drive(v,omega);
+        end
     end
     
     %% Custom setters and getters for class properties
@@ -661,7 +681,7 @@ classdef RobotSimulator < handle
             obj.ScanAngles=ScanAngles;
             ScanRanges=zeros(N_Laser,obj.N,1);
             obj.ScanRanges=ScanRanges;
-            ScanCollisionLoc=zeros(N_Laser,obj.N,2);
+            ScanCollisionLoc=zeros(N_Laser,2,obj.N);
             obj.ScanCollisionLoc=ScanCollisionLoc;
             obj.ScanLineHandles=gobjects(obj.N);
             obj.ScanPointHandles=gobjects(obj.N);
@@ -836,8 +856,7 @@ classdef RobotSimulator < handle
         function plotRobot(obj)
             %plotRobot Plot robot
             %Needs modification to support redrawing of the robot objects
-            %once they are randomized and occasional robots that do get
-            %stuck on the origin
+            %so that they don't overlap on each other
             for i=1:obj.N
                 x = obj.Robot(i).Pose(1);
                 y = obj.Robot(i).Pose(2);
@@ -993,27 +1012,27 @@ classdef RobotSimulator < handle
             %cleanup Figure window was closed, so delete this object
             delete(obj);
         end
-        
-        function keyhandler(src,evnt) %#ok<INUSL>
-            %Teleoperative Driving
-            %Doesn't use subscribers or publishers
-            %Uses the drive() function to update the robots
-            key=evnt.Key;
-            v=1;
-            omega=pi/2;
-            if strcmp(key,'leftarrow') || strcmp(key,'l')|| strcmp(key,'1')
-                %Move Left
-                omega = pi;
-            elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')
-                %Move Right
-                omega = 0;
-            elseif strcmp(key,'uparrow')|| strcmp(key,'u')|| strcmp(key,'3')
-                %Move Up
-                omega = pi/2;
-            elseif strcmp(key,'downarrow')|| strcmp(key,'d') || strcmp(key,'4')
-                omega = 3*pi/2;
-            end
-            drive(v,omega);
-        end
     end 
+end
+function keyhandler(src,evnt) %#ok<INUSL>
+%Teleoperative Driving
+%Doesn't use subscribers or publishers
+%Uses the drive() function to update the robots
+Simulator=evalin('base', 'Simulator');
+key=evnt.Key;
+v=1;
+omega=pi/2;
+if strcmp(key,'leftarrow') || strcmp(key,'l')|| strcmp(key,'1')
+    %Move Left
+    omega = pi;
+elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')
+    %Move Right
+    omega = 0;
+elseif strcmp(key,'uparrow')|| strcmp(key,'u')|| strcmp(key,'3')
+    %Move Up
+    omega = pi/2;
+elseif strcmp(key,'downarrow')|| strcmp(key,'d') || strcmp(key,'4')
+    omega = 3*pi/2;
+end
+Simulator.drive(v,omega);
 end

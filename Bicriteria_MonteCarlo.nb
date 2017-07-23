@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     24957,        590]
-NotebookOptionsPosition[     23964,        560]
-NotebookOutlinePosition[     24311,        575]
-CellTagsIndexPosition[     24268,        572]
+NotebookDataLength[     27297,        644]
+NotebookOptionsPosition[     25834,        603]
+NotebookOutlinePosition[     26213,        619]
+CellTagsIndexPosition[     26170,        616]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -457,21 +457,22 @@ Cell[BoxData[{
        RowBox[{
         RowBox[{"Moves", "[", "x", "]"}], "+", 
         RowBox[{"Scans", "[", 
+         RowBox[{"x", ",", "100"}], "]"}]}], ",", 
+       RowBox[{
+        RowBox[{"Moves", "[", "x", "]"}], "+", 
+        RowBox[{"Scans", "[", 
          RowBox[{"x", ",", "1000"}], "]"}]}], ",", 
        RowBox[{
         RowBox[{"Moves", "[", "x", "]"}], "+", 
         RowBox[{"Scans", "[", 
-         RowBox[{"x", ",", "1000000"}], "]"}]}], ",", 
-       RowBox[{
-        RowBox[{"Moves", "[", "x", "]"}], "+", 
-        RowBox[{"Scans", "[", 
          RowBox[{"x", ",", 
-          RowBox[{"1", "/", "1000"}]}], "]"}]}]}], "}"}], ",", 
+          RowBox[{"1", "/", "100"}]}], "]"}]}]}], "}"}], ",", 
      RowBox[{"{", 
-      RowBox[{"x", ",", "1", ",", "workspace"}], "}"}], ",", 
+      RowBox[{"x", ",", "1", ",", "Workspace"}], "}"}], ",", 
      RowBox[{
      "PlotLabel", "\[Rule]", 
-      "\"\<Cost vs. Workspace Size on a logarithmic plot\>\""}], ",", " ", 
+      "\"\<Cost Scans and Moves with linear multipliers vs. Workspace Size on \
+a logarithmic plot\>\""}], ",", " ", 
      RowBox[{"AxesLabel", "\[Rule]", 
       RowBox[{"{", 
        RowBox[{"\"\<Workspace Size\>\"", ",", "\"\<Log(Cost)\>\""}], "}"}]}], 
@@ -479,12 +480,12 @@ Cell[BoxData[{
      RowBox[{"PlotLegends", "\[Rule]", 
       RowBox[{"{", 
        RowBox[{
-       "\"\<c=1\>\"", ",", "\"\<c=1000\>\"", ",", "\"\<c=1000000\>\"", ",", 
-        "\"\<c=1/1000\>\""}], "}"}]}], ",", 
+       "\"\<cost=1\>\"", ",", "\"\<cost=100\>\"", ",", "\"\<cost=1000\>\"", 
+        ",", "\"\<cost=1/100\>\""}], "}"}]}], ",", 
      RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}], ",", 
    RowBox[{"{", 
-    RowBox[{"workspace", ",", "5", ",", 
-     RowBox[{"10", "^", "8"}]}], "}"}]}], "\[IndentingNewLine]", 
+    RowBox[{"Workspace", ",", "2", ",", 
+     RowBox[{"10", "^", "5"}]}], "}"}]}], "\[IndentingNewLine]", 
   "]"}]}], "Input",
  CellChangeTimes->{{3.7089904877833433`*^9, 3.708990513483653*^9}, 
    3.7089906443784943`*^9, {3.7089907844643435`*^9, 3.7089908148836327`*^9}, {
@@ -498,24 +499,28 @@ Cell[BoxData[{
    3.7090377482003098`*^9}, {3.7090378845589757`*^9, 3.709037905269354*^9}, {
    3.7090379358653245`*^9, 3.7090379749536524`*^9}, {3.7090380386257195`*^9, 
    3.709038057375944*^9}, {3.709038180629164*^9, 3.709038329309947*^9}, {
-   3.709403771565201*^9, 
-   3.709403781106908*^9}},ExpressionUUID->"41fb27b7-7a74-4f9d-ac05-\
+   3.709403771565201*^9, 3.709403781106908*^9}, {3.7095562210786624`*^9, 
+   3.70955626801499*^9}, {3.709556394990796*^9, 3.709556453151513*^9}, {
+   3.709556486928608*^9, 3.709556518318121*^9}, {3.70955658691905*^9, 
+   3.7095565870693245`*^9}, {3.709556646717513*^9, 3.709556670154705*^9}, {
+   3.709556813423493*^9, 3.709556814836102*^9}, {3.709556897476041*^9, 
+   3.709556899395208*^9}},ExpressionUUID->"41fb27b7-7a74-4f9d-ac05-\
 6d4143fb3630"],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`workspace$$ = 5., Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`Workspace$$ = 2, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
-      Hold[$CellContext`workspace$$], 5, 100000000}}, Typeset`size$$ = {
-    1369., {324., 334.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`workspace$7156$$ = 0}, 
+      Hold[$CellContext`Workspace$$], 2, 100000}}, Typeset`size$$ = {
+    1033., {244., 253.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`Workspace$184329$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
-     1, StandardForm, "Variables" :> {$CellContext`workspace$$ = 5}, 
+     1, StandardForm, "Variables" :> {$CellContext`Workspace$$ = 2}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`workspace$$, $CellContext`workspace$7156$$, 0]}, 
+        Hold[$CellContext`Workspace$$, $CellContext`Workspace$184329$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -525,17 +530,18 @@ Cell[BoxData[
 $CellContext`Scans[$CellContext`x, 
            1], $CellContext`Moves[$CellContext`x] + \
 $CellContext`Scans[$CellContext`x, 
-           1000], $CellContext`Moves[$CellContext`x] + \
+           100], $CellContext`Moves[$CellContext`x] + \
 $CellContext`Scans[$CellContext`x, 
-           1000000], $CellContext`Moves[$CellContext`x] + \
-$CellContext`Scans[$CellContext`x, 1/1000]}, {$CellContext`x, 
-         1, $CellContext`workspace$$}, PlotLabel -> 
-        "Cost vs. Workspace Size on a logarithmic plot", 
-        AxesLabel -> {"Workspace Size", "Log(Cost)"}, 
-        PlotLegends -> {"c=1", "c=1000", "c=1000000", "c=1/1000"}, ImageSize -> 
-        Large], "Specifications" :> {{$CellContext`workspace$$, 5, 
-         100000000}}, "Options" :> {}, "DefaultOptions" :> {}],
-     ImageSizeCache->{1459., {420., 431.}},
+           1000], $CellContext`Moves[$CellContext`x] + \
+$CellContext`Scans[$CellContext`x, 1/100]}, {$CellContext`x, 
+         1, $CellContext`Workspace$$}, PlotLabel -> 
+        "Cost Scans and Moves with linear multipliers vs. Workspace Size on a \
+logarithmic plot", AxesLabel -> {"Workspace Size", "Log(Cost)"}, 
+        PlotLegends -> {"cost=1", "cost=100", "cost=1000", "cost=1/100"}, 
+        ImageSize -> Large], 
+      "Specifications" :> {{$CellContext`Workspace$$, 2, 100000}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{1105., {322., 331.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -554,12 +560,50 @@ $CellContext`Scans[$CellContext`x, 1/1000]}, {$CellContext`x,
    3.7090377365501237`*^9, 3.7090377489974365`*^9}, 3.7090379120449796`*^9, {
    3.7090379581421747`*^9, 3.709037975469563*^9}, {3.7090380403133926`*^9, 
    3.7090380587787323`*^9}, {3.7090382802936907`*^9, 3.7090383023132753`*^9}, 
-   3.709403787391924*^9},ExpressionUUID->"9a14d17f-e6fa-429f-9b17-\
-ff6ce039ad59"]
-}, Open  ]]
+   3.709403787391924*^9, {3.7095562601956177`*^9, 3.709556268683854*^9}, 
+   3.7095564967462077`*^9, 3.7095565507613225`*^9, 3.7095566213118157`*^9, {
+   3.7095566573928223`*^9, 3.7095566722081575`*^9}, 3.7095568236817694`*^9, 
+   3.709556899958508*^9, {3.7095573015807457`*^9, 
+   3.7095573138681784`*^9}},ExpressionUUID->"562b3f57-dbaa-482a-b245-\
+b5ded309ec06"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"Export", "[", 
+   RowBox[{"\"\<Bicriterion.avi\>\"", ",", "%", ",", 
+    RowBox[{"\"\<VideoEncoding\>\"", "\[Rule]", "\"\<MPEG-4 Video\>\""}]}], 
+   "]"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.709557044182084*^9, 3.709557056713914*^9}, {
+  3.709557091799279*^9, 3.709557095651409*^9}, {3.7095572326588573`*^9, 
+  3.7095572342384787`*^9}, {3.709557274930934*^9, 3.709557308858821*^9}, {
+  3.709577079026909*^9, 
+  3.709577084880519*^9}},ExpressionUUID->"9ee21a57-4c7d-4317-ae3c-\
+a96724bec1a3"],
+
+Cell[BoxData["\<\"Bicriterion.avi\"\>"], "Output",
+ CellChangeTimes->{
+  3.709557092315894*^9, 3.709557234777089*^9, {3.7095572945504174`*^9, 
+   3.7095573091388025`*^9}, 
+   3.709557349582965*^9},ExpressionUUID->"284f2d5d-2a5f-494f-9b9a-\
+62b7a2563780"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.709557141448448*^9, 3.7095571454366283`*^9}, 
+   3.7095572296327696`*^9},ExpressionUUID->"ed067a1c-390c-4b86-b563-\
+8f01d33078b0"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.709557368305123*^9, 
+  3.709557370697877*^9}},ExpressionUUID->"e05ce1e9-3ed0-41c4-b013-\
+575893bfe8cd"]
 },
-WindowSize->{2736, 1660},
-WindowMargins->{{-13, Automatic}, {Automatic, -13}},
+WindowSize->{1920, 956},
+WindowMargins->{{Automatic, -1933}, {Automatic, -13}},
+Magnification:>0.75 Inherited,
 FrontEndVersion->"11.1 for Microsoft Windows (64-bit) (April 18, 2017)",
 StyleDefinitions->"Default.nb"
 ]
@@ -574,24 +618,34 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 1212, 23, 326, "Text", "ExpressionUUID" -> \
+Cell[558, 20, 1212, 23, 246, "Text", "ExpressionUUID" -> \
 "09c4305a-d7ed-4a88-978b-43c367c2cb98"],
 Cell[CellGroupData[{
-Cell[1795, 47, 10621, 250, 1193, "Input", "ExpressionUUID" -> \
+Cell[1795, 47, 10621, 250, 888, "Input", "ExpressionUUID" -> \
 "baeb6d24-8ec5-4754-956b-417001d59749"],
-Cell[12419, 299, 4326, 89, 769, "Output", "ExpressionUUID" -> \
+Cell[12419, 299, 4326, 89, 577, "Output", "ExpressionUUID" -> \
 "1016d0aa-4212-495f-a6da-02caf692f8cf"]
 }, Open  ]],
-Cell[16760, 391, 179, 3, 61, "Input", "ExpressionUUID" -> \
+Cell[16760, 391, 179, 3, 46, "Input", "ExpressionUUID" -> \
 "30db50fc-09d5-4cc7-a5bd-30dbd40d7fbb"],
-Cell[16942, 396, 587, 11, 98, "Text", "ExpressionUUID" -> \
+Cell[16942, 396, 587, 11, 75, "Text", "ExpressionUUID" -> \
 "e21d38fd-a9b5-4a3c-af35-4e2c81ca1e01"],
 Cell[CellGroupData[{
-Cell[17554, 411, 3549, 91, 374, "Input", "ExpressionUUID" -> \
+Cell[17554, 411, 3933, 96, 279, "Input", "ExpressionUUID" -> \
 "41fb27b7-7a74-4f9d-ac05-6d4143fb3630"],
-Cell[21106, 504, 2842, 53, 883, "Output", "ExpressionUUID" -> \
-"9a14d17f-e6fa-429f-9b17-ff6ce039ad59"]
-}, Open  ]]
+Cell[21490, 509, 3160, 58, 678, "Output", "ExpressionUUID" -> \
+"562b3f57-dbaa-482a-b245-b5ded309ec06"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[24687, 572, 537, 11, 46, "Input", "ExpressionUUID" -> \
+"9ee21a57-4c7d-4317-ae3c-a96724bec1a3"],
+Cell[25227, 585, 254, 5, 46, "Output", "ExpressionUUID" -> \
+"284f2d5d-2a5f-494f-9b9a-62b7a2563780"]
+}, Open  ]],
+Cell[25496, 593, 179, 3, 46, "Input", "ExpressionUUID" -> \
+"ed067a1c-390c-4b86-b563-8f01d33078b0"],
+Cell[25678, 598, 152, 3, 46, "Input", "ExpressionUUID" -> \
+"e05ce1e9-3ed0-41c4-b013-575893bfe8cd"]
 }
 ]
 *)
