@@ -45,7 +45,7 @@ classdef SimRangeSensor < robotics.algs.internal.GridAccess & handle
         
         %NumReadings - Number of sensor readings in the 180 opening cone
         %   Default: 21 readings
-        NumReadings = 21
+        NumReadings = 50
         
         %SensorNoise - Gaussian sensor noise of range readings (stdev in meters)
         %   Default: 0 meters

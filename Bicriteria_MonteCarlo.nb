@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     27297,        644]
-NotebookOptionsPosition[     25834,        603]
-NotebookOutlinePosition[     26213,        619]
-CellTagsIndexPosition[     26170,        616]
+NotebookDataLength[     27320,        644]
+NotebookOptionsPosition[     25857,        603]
+NotebookOutlinePosition[     26236,        619]
+CellTagsIndexPosition[     26193,        616]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -510,17 +510,17 @@ a logarithmic plot\>\""}], ",", " ",
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`Workspace$$ = 2, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`Workspace$$ = 2., Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
       Hold[$CellContext`Workspace$$], 2, 100000}}, Typeset`size$$ = {
-    1033., {244., 253.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`Workspace$184329$$ = 0}, 
+    1033., {243., 251.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`Workspace$84956$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, "Variables" :> {$CellContext`Workspace$$ = 2}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`Workspace$$, $CellContext`Workspace$184329$$, 0]}, 
+        Hold[$CellContext`Workspace$$, $CellContext`Workspace$84956$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -541,7 +541,7 @@ logarithmic plot", AxesLabel -> {"Workspace Size", "Log(Cost)"},
         ImageSize -> Large], 
       "Specifications" :> {{$CellContext`Workspace$$, 2, 100000}}, 
       "Options" :> {}, "DefaultOptions" :> {}],
-     ImageSizeCache->{1105., {322., 331.}},
+     ImageSizeCache->{1105., {320., 329.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -563,9 +563,9 @@ logarithmic plot", AxesLabel -> {"Workspace Size", "Log(Cost)"},
    3.709403787391924*^9, {3.7095562601956177`*^9, 3.709556268683854*^9}, 
    3.7095564967462077`*^9, 3.7095565507613225`*^9, 3.7095566213118157`*^9, {
    3.7095566573928223`*^9, 3.7095566722081575`*^9}, 3.7095568236817694`*^9, 
-   3.709556899958508*^9, {3.7095573015807457`*^9, 
-   3.7095573138681784`*^9}},ExpressionUUID->"562b3f57-dbaa-482a-b245-\
-b5ded309ec06"]
+   3.709556899958508*^9, {3.7095573015807457`*^9, 3.7095573138681784`*^9}, 
+   3.7099000145054936`*^9},ExpressionUUID->"2b7d48e7-58a8-4991-accb-\
+3cf3dd7e545f"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -633,18 +633,18 @@ Cell[16942, 396, 587, 11, 75, "Text", "ExpressionUUID" -> \
 Cell[CellGroupData[{
 Cell[17554, 411, 3933, 96, 279, "Input", "ExpressionUUID" -> \
 "41fb27b7-7a74-4f9d-ac05-6d4143fb3630"],
-Cell[21490, 509, 3160, 58, 678, "Output", "ExpressionUUID" -> \
-"562b3f57-dbaa-482a-b245-b5ded309ec06"]
+Cell[21490, 509, 3183, 58, 674, "Output", "ExpressionUUID" -> \
+"2b7d48e7-58a8-4991-accb-3cf3dd7e545f"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[24687, 572, 537, 11, 46, "Input", "ExpressionUUID" -> \
+Cell[24710, 572, 537, 11, 46, "Input", "ExpressionUUID" -> \
 "9ee21a57-4c7d-4317-ae3c-a96724bec1a3"],
-Cell[25227, 585, 254, 5, 46, "Output", "ExpressionUUID" -> \
+Cell[25250, 585, 254, 5, 46, "Output", "ExpressionUUID" -> \
 "284f2d5d-2a5f-494f-9b9a-62b7a2563780"]
 }, Open  ]],
-Cell[25496, 593, 179, 3, 46, "Input", "ExpressionUUID" -> \
+Cell[25519, 593, 179, 3, 46, "Input", "ExpressionUUID" -> \
 "ed067a1c-390c-4b86-b563-8f01d33078b0"],
-Cell[25678, 598, 152, 3, 46, "Input", "ExpressionUUID" -> \
+Cell[25701, 598, 152, 3, 46, "Input", "ExpressionUUID" -> \
 "e05ce1e9-3ed0-41c4-b013-575893bfe8cd"]
 }
 ]

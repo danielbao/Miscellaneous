@@ -13,8 +13,8 @@
 
 %Code to test the default simulator with one robot on the map.
 %Simulator=ExampleHelperRobotSimulator('simpleMap',2);
-Simulator=RobotSimulator('complexMap',2,10);
-enableROSInterface(Simulator, true);
+Simulator=RobotSimulator('complexMap',2,40);
+%enableROSInterface(Simulator, true);
 % for i=1:Simulator.N
 %     Simulator.LaserSensor(i).NumReadings=50;
 % end

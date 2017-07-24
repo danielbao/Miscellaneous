@@ -145,7 +145,9 @@ classdef RobotSimulator < handle
         %RobotBodyFaceColor - Robot's body color
         RobotBodyFaceColor = [0.9 0.0 0.0]
         %RobotBodyTriangleVertices - Robot's body in an arrow shape
-        RobotBodyTriangleVertices = [[-0.3, -0.05,-0.3,0.8]; [-0.5,0,0.5,0]] * 0.5;
+        %Changed to make it more circular
+        RobotBodyTriangleVertices = [[-0.5,-0.35,0,0.35,0.5,0.35,0,-0.35]; 
+                                     [0,0.35,0.5,0.35,0,-0.35,-0.5,-0.35]] * 0.5;
         %RobotSize - Radius of bounding circle for robot's body
         RobotSize = 0.4;
         %TrajectoryBufferCapacity - The capacity of the circular buffer
@@ -857,6 +859,11 @@ classdef RobotSimulator < handle
             %plotRobot Plot robot
             %Needs modification to support redrawing of the robot objects
             %so that they don't overlap on each other
+            %Possible approaches:
+            % setOccupancy on the InternalMap, but will that make them have
+            % black dots on each other?
+            % Or just go through the robots and make sure the pose isn't on
+            % one of them
             for i=1:obj.N
                 x = obj.Robot(i).Pose(1);
                 y = obj.Robot(i).Pose(2);
