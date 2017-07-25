@@ -13,14 +13,14 @@
 
 %Code to test the default simulator with one robot on the map.
 %Simulator=ExampleHelperRobotSimulator('simpleMap',2);
-Simulator=RobotSimulator('complexMap',2,40);
-%enableROSInterface(Simulator, true);
+Simulator=RobotSimulator('simpleMap',2,20);
+enableROSInterface(Simulator, true);
 % for i=1:Simulator.N
 %     Simulator.LaserSensor(i).NumReadings=50;
 % end
 % scanSub = rossubscriber('scan');
 % [velPub, velMsg] = rospublisher('/mobile_base/commands/velocity');
-% tftree = rostf;
+tftree = rostf;
 % pause(1);
 
 

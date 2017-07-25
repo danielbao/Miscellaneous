@@ -742,6 +742,7 @@ classdef RobotSimulator < handle
                 %updateKinematicsUpdate The kinematic model of the robot
                 % Save last pose
                 initialPose = obj.Robot(i).Pose;
+                obj.InternalMap.setOccupancy([initialPose(1) initialPose(2)], 1);
                 obj.Robot(i).updateKinematics(obj.Step);
                 
                 % Update robot state
