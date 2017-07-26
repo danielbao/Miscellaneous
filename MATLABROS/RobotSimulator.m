@@ -743,6 +743,10 @@ classdef RobotSimulator < handle
                 % Save last pose
                 initialPose = obj.Robot(i).Pose;
                 obj.InternalMap.setOccupancy([initialPose(1) initialPose(2)], 1);
+                %Edit, we would have to set the Occupancy of every Robot
+                %into the occupancy grid and then check for Collision.
+                %Would increase the calculation time a bit too much. Maybe
+                %use a find array thing.
                 obj.Robot(i).updateKinematics(obj.Step);
                 
                 % Update robot state
@@ -862,7 +866,7 @@ classdef RobotSimulator < handle
             %so that they don't overlap on each other
             %Possible approaches:
             % setOccupancy on the InternalMap, but will that make them have
-            % black dots on each other?
+            % black dots on each other?-Edit not feasible
             % Or just go through the robots and make sure the pose isn't on
             % one of them
             for i=1:obj.N
@@ -899,6 +903,7 @@ classdef RobotSimulator < handle
                     obj.RobotBodyHandle(i).FaceColor = markerFaceColor;
                 end
                 uistack(obj.RobotBodyHandle(i), 'top');
+                %Check if uistack always needs to be called to the top.
             end
         end
         
