@@ -45,7 +45,7 @@ Exploration and Mapping with a Particle Swarm\\ Controlled by Uniform Inputs on 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}\label{sec:Introduction}
-	This research deals with mapping a workspace using a swarm of non-intelligent robots or particles. Much work has been done in single robot mapping, but there is a gap of research for multiple robots exploring an environment using the same input commands, also known as global uniform control. In our previous work~\cite{AAM}, we developed a ClosestFrontier algorithm, with frontiers being unknown boundary cells, that maps a discrete 2D workspace using global uniform control. Here we expand its scope to 3D environments, implement a physical hardware setup using four orthogonal magnetic coils, and develop a ROS simulation using MATLAB's Robotic Toolbox.
+	This research deals with mapping a workspace using a swarm of particles. Much work has been done in single particle mapping, but there is a gap of research for multiple particles exploring an environment using the same input commands, also known as uniform control signaling. In our previous work~\cite{AAM}, we developed a ClosestFrontier algorithm, with frontiers being unknown boundary cells, that maps a discrete 2D workspace using uniform control signaling. Here we expand its scope to 3D environments, implement a physical hardware setup using four Helmholtz coils, and develop a ROS simulation using MATLAB's Robotic Toolbox.
 \section{Methods and Results}\label{sec:Methods and Results}
 	For the physical setup, we use resin-bound acrylic to create a transparent workspace compatible with the black paramagnetic particles suspended on the water's surface and a camera recording from below (See Fig. 3). This allows for more dynamic interactions as well as continuous boundaries. New challenges like wall friction, surface tension, and  hydrophobic interactions between the particles now arise from the physicality of the setup. These physical properties prove hardest to overcome in small branched maps because of the steep meniscus and local minimum of water that the particles face. To address this problem, we designed our workspaces with optimized channel width and curved edges to avoid local minimums.
 	
@@ -53,30 +53,25 @@ Exploration and Mapping with a Particle Swarm\\ Controlled by Uniform Inputs on 
 	
 	Upgrading the simulation required fundamental changes within the program that now uses the Robotics Toolbox in MATLAB that enables continuous workspaces. This toolbox allows ROS, or Robotics Operating System, integration with MATLAB object oriented programming and scripts. The new simulator consists of a class instantiating \textit{n} robots in a workspace defined by a image file. The difference is that this simulation uses low-range distance sensors to simulate the boundary interactions instead of comparing position data after inputs. 
 \section{Discussion}\label{sec:Discussion}
-	This research allows for precise control over weaker para-magnetic particles as well as a theoretical understanding of algorithmic efficiency in real world workspaces. Ultimately, medicinal applications in active targeted drug delivery and mapping vasculature as an alternative to traditional contrast agents are fields that can benefit from this research as well as more studies on non-invasive particle treatments. 
+	This research allows for precise control over weaker para-magnetic particles as well as a theoretical understanding of algorithmic efficiency in real world workspaces. Ultimately, medicinal applications in active targeted drug delivery and mapping vasculature as an alternative to traditional contrast agents as well as more studies on non-invasive particle treatments are possible areas for future work. 
 \begin{figure}
-	%\vspace{-20pt}
-\begin{comment}
-	\includegraphics[height=0.2\paperheight]{3d1.png}
-	\caption{The 3D simulation is shown above with red blocks being the particles, blue being the frontier cells, and white being free explored cells.}
-\end{comment}
-	\includegraphics[width=0.15\textwidth]{3D_initial}
-	\includegraphics[width=0.15\textwidth]{3D_middle}
-	\includegraphics[width=0.1\textwidth]{3D_final}
-	\caption{Each picture is a snapshot of the 3D mapping process at different stages from initialization to completion. The white blocks are the mapped free spaces and everything else is an obstacle. The mapped workspace is the logo of the University of Houston and has 720 free spaces. This takes around 700-800 moves depending on the initial positions of the particles.}
-\begin{comment}
-	\includegraphics[height=0.18\paperheight]{10particles_3D.jpg}
-	\caption{This is another perspective of the completed workspace in Fig. 1. There are four layers for the particles to explore.}
-\end{comment}
 \centering
-	\includegraphics[width=0.1\paperheight]{2D_720_initial.jpg}
-	\includegraphics[width=0.1\paperheight]{10particles_final.jpg}
-	
-	\caption{From left to right, the mapping of this 2D workspace is depicted. For an equivalent number of free cells in 2D, more moves (1100-1200 moves compared to 700-800) were required due to the increased complexity of this vascular system based off of a leaf tissue sample. The 2D simulation uses black blocks to represent boundary cells.}
+	%\vspace{-20pt}
+	\includegraphics[width=0.13\textwidth]{3D_initial}
+	\includegraphics[width=0.13\textwidth]{3D_middle}
+	\includegraphics[width=0.09\textwidth]{3D_final}
+	\caption{Each picture is a snapshot of the 3D mapping process at different stages from initialization to completion. The white blocks are the mapped free spaces and everything else is an obstacle. The mapped workspace is the logo of the University of Houston and has 720 free spaces. This takes around 700-800 moves depending on the initial positions of the particles.}
+\centering
+	\includegraphics[width=0.09\paperheight]{2D_720_initial.jpg}
+	\includegraphics[width=0.09\paperheight]{10particles_final.jpg}
+	\includegraphics[height=0.09\paperheight]{Optimized-Workspace-min.jpg}
+	\caption{The first two pictures are the mapping of this 2D workspace. For an equivalent number of free cells in 2D, more moves (1100-1200 moves compared to 700-800) were required due to the increased complexity of this leaf vascular system. The 2D simulation uses black blocks to represent boundary cells. The last picture is a smoothed out workspace created with acrylic and the ROS simulation. The small black dots are the paramagnetic particles and they have a diameter of 325 to 455 $\mu$m. 
+}
 	\centering
-	\includegraphics[height=0.10\paperheight]{Optimized-Workspace.jpg}
+	
+	\includegraphics[height=0.12\paperheight]{Double_Workspace.jpg}
 \caption{
-This is a picture of the smoothed out workspace created with acrylic. The small black dots are the paramagnetic particles and they have a diameter of .325 to .455 mm. 
+For the ROS simulation, the color scheme is the same but the displayed map is the complete map alongisde an occupancy grid showing known free cells and boundaries. They are moving under random moves and obey a uniform control signal.
 }
 \end{figure}
 \bibliographystyle{IEEEtran}
