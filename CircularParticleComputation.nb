@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     33023,        726]
-NotebookOptionsPosition[     32579,        708]
-NotebookOutlinePosition[     32921,        723]
-CellTagsIndexPosition[     32878,        720]
+NotebookDataLength[     33879,        742]
+NotebookOptionsPosition[     33435,        724]
+NotebookOutlinePosition[     33777,        739]
+CellTagsIndexPosition[     33734,        736]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -326,25 +326,18 @@ Cell[BoxData[
           ",", "\[IndentingNewLine]", 
           RowBox[{"(*", 
            RowBox[{
-           "The", " ", "Approach", " ", "here", " ", "is", " ", "to", " ", 
-            "use", " ", "some", " ", "boolean", " ", "regions", " ", "to", 
-            " ", "make", " ", "the", " ", "shape", " ", "nice"}], "*)"}], 
-          "\[IndentingNewLine]", 
-          RowBox[{"(*", 
-           RowBox[{
             RowBox[{
-             RowBox[{"Polygon", "[", 
-              RowBox[{"{", 
-               RowBox[{"pt", ",", 
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{"Cos", "[", "leftA", "]"}], ",", 
-                  RowBox[{"Sin", "[", "leftA", "]"}]}], "}"}], ",", 
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{"Cos", "[", "rightA", "]"}], ",", 
-                  RowBox[{"Sin", "[", "rightA", "]"}]}], "}"}]}], "}"}], 
-              "]"}], "}"}], ","}], "*)"}], "\[IndentingNewLine]", 
+            "The", " ", "Approach", " ", "here", " ", "is", " ", "to", " ", 
+             "use", " ", "some", " ", "draw", " ", "the", " ", "arc", " ", 
+             "from", " ", "the", " ", "original", " ", "point", " ", "from", 
+             " ", "the", " ", "center"}], ",", " ", 
+            RowBox[{
+            "but", " ", "then", " ", "cover", " ", "up", " ", "the", " ", 
+             "triangle", " ", "with", " ", "white", " ", "and", " ", "then", 
+             " ", "redraw", " ", "the", " ", "bigger", " ", 
+             RowBox[{"triangle", ".", " ", "Works"}], " ", "pretty", " ", 
+             "well", " ", "if", " ", "I", " ", "say", " ", "so", " ", 
+             "myself"}]}], "*)"}], "\[IndentingNewLine]", 
           RowBox[{"{", 
            RowBox[{"White", ",", 
             RowBox[{"Triangle", "[", 
@@ -417,7 +410,27 @@ Cell[BoxData[
               RowBox[{"{", 
                RowBox[{"0", ",", 
                 RowBox[{"-", "0.7"}]}], "}"}]}], "]"}], ","}], "*)"}], 
-          "\[IndentingNewLine]", "Orange", ",", "Thick", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"(*", 
+            RowBox[{"left", " ", "end", " ", "point"}], "*)"}], 
+           RowBox[{"Green", ",", 
+            RowBox[{"Point", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Cos", "[", "leftA", "]"}], ",", 
+               RowBox[{"Sin", "[", "leftA", "]"}]}], "}"}], "]"}]}], "}"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"(*", 
+            RowBox[{"right", " ", "end", " ", "point"}], "*)"}], 
+           RowBox[{"Purple", ",", 
+            RowBox[{"Point", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Cos", "[", "rightA", "]"}], ",", 
+               RowBox[{"Sin", "[", "rightA", "]"}]}], "}"}], "]"}]}], "}"}], 
+          ",", "\[IndentingNewLine]", "Orange", ",", "Thick", ",", 
           RowBox[{"Circle", "[", 
            RowBox[{
             RowBox[{"{", 
@@ -557,22 +570,25 @@ ptAng with bearing \[Theta]\>\""}]}], "]"}]}]}], "]"}], ",",
    3.7108091814280963`*^9}, {3.7108095993529453`*^9, 3.710809610488591*^9}, {
    3.7108103390216107`*^9, 3.7108103423378334`*^9}, {3.710810461723948*^9, 
    3.7108104896276474`*^9}, {3.710810519723333*^9, 3.710810696502001*^9}, {
-   3.7108107554925404`*^9, 
-   3.7108108304262247`*^9}},ExpressionUUID->"fa8b904d-0b65-4341-849e-\
+   3.7108107554925404`*^9, 3.7108108304262247`*^9}, {3.7109423035057917`*^9, 
+   3.7109423215325394`*^9}, {3.7109425267931104`*^9, 
+   3.7109425482726245`*^9}, {3.7109431613025446`*^9, 
+   3.710943164853427*^9}},ExpressionUUID->"fa8b904d-0b65-4341-849e-\
 aa9a1df107a6"],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
    DynamicModuleBox[{$CellContext`disp$$ = 
-    0.21205750411731106`, $CellContext`ptAng$$ = 0, $CellContext`\[Theta]$$ = 
-    3.141592653589793, Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
-    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
-    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+    0.28588493147667116`, $CellContext`ptAng$$ = 
+    0, $CellContext`\[Theta]$$ = -1.8849555921538759`, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
       Hold[$CellContext`disp$$], 0, Rational[1, 4] Pi}, {{
        Hold[$CellContext`\[Theta]$$], Pi}, -Pi, Pi}, {{
        Hold[$CellContext`ptAng$$], 0}, -Pi, Pi}}, Typeset`size$$ = {
-    360., {184., 191.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    360., {185., 190.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
     Typeset`skipInitDone$$ = True, $CellContext`disp$106962$$ = 
     0, $CellContext`\[Theta]$106963$$ = 0, $CellContext`ptAng$106964$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
@@ -684,7 +700,7 @@ ptAng with bearing \[Theta]"]],
          Appearance -> "Labeled"}, {{$CellContext`\[Theta]$$, Pi}, -Pi, Pi, 
          Appearance -> "Labeled"}, {{$CellContext`ptAng$$, 0}, -Pi, Pi, 
          Appearance -> "Labeled"}}, "Options" :> {}, "DefaultOptions" :> {}],
-     ImageSizeCache->{411., {258., 265.}},
+     ImageSizeCache->{411., {260., 266.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -706,7 +722,7 @@ ptAng with bearing \[Theta]"]],
 b3106eb41b13"]
 }, Open  ]]
 },
-WindowSize->{958, 988},
+WindowSize->{682, 820},
 WindowMargins->{{-7, Automatic}, {Automatic, 0}},
 FrontEndVersion->"11.1 for Microsoft Windows (64-bit) (April 18, 2017)",
 StyleDefinitions->"Default.nb"
@@ -723,9 +739,9 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 24779, 539, 1095, "Input", "ExpressionUUID" -> \
+Cell[580, 22, 25627, 554, 1456, "Input", "ExpressionUUID" -> \
 "fa8b904d-0b65-4341-849e-aa9a1df107a6"],
-Cell[25362, 563, 7201, 142, 573, "Output", "ExpressionUUID" -> \
+Cell[26210, 578, 7209, 143, 543, "Output", "ExpressionUUID" -> \
 "4836022d-890e-4815-a92b-b3106eb41b13"]
 }, Open  ]]
 }
