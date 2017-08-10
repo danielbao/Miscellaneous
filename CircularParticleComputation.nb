@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     35559,        775]
-NotebookOptionsPosition[     35112,        757]
-NotebookOutlinePosition[     35457,        772]
-CellTagsIndexPosition[     35414,        769]
+NotebookDataLength[     35610,        776]
+NotebookOptionsPosition[     35166,        758]
+NotebookOutlinePosition[     35508,        773]
+CellTagsIndexPosition[     35465,        770]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -603,8 +603,9 @@ aa9a1df107a6"],
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`disp$$ = 0, $CellContext`ptAng$$ = 
-    0, $CellContext`\[Theta]$$ = Pi, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`disp$$ = 
+    0.3235840433197487, $CellContext`ptAng$$ = -1.4828317324943825`, \
+$CellContext`\[Theta]$$ = 0.9801769079200158, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
@@ -755,8 +756,8 @@ ptAng with bearing \[Theta]"]],
 730f792f5c9b"]
 }, Open  ]]
 },
-WindowSize->{956, 987},
-WindowMargins->{{Automatic, -2334}, {Automatic, 0}},
+WindowSize->{682, 820},
+WindowMargins->{{Automatic, -7}, {Automatic, 0}},
 FrontEndVersion->"11.1 for Microsoft Windows (64-bit) (April 18, 2017)",
 StyleDefinitions->"Default.nb"
 ]
@@ -772,9 +773,9 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 26825, 578, 1171, "Input", "ExpressionUUID" -> \
+Cell[580, 22, 26825, 578, 1494, "Input", "ExpressionUUID" -> \
 "fa8b904d-0b65-4341-849e-aa9a1df107a6"],
-Cell[27408, 602, 7688, 152, 543, "Output", "ExpressionUUID" -> \
+Cell[27408, 602, 7742, 153, 543, "Output", "ExpressionUUID" -> \
 "04d3a8af-c36f-4397-b48a-730f792f5c9b"]
 }, Open  ]]
 }
