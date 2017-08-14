@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     59499,       1463]
-NotebookOptionsPosition[     58551,       1432]
-NotebookOutlinePosition[     58914,       1448]
-CellTagsIndexPosition[     58871,       1445]
+NotebookDataLength[     62322,       1527]
+NotebookOptionsPosition[     60956,       1488]
+NotebookOutlinePosition[     61317,       1504]
+CellTagsIndexPosition[     61274,       1501]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1227,15 +1227,13 @@ Cell[BoxData[
             RowBox[{"movement", " ", "dir"}], "*)"}], "\[IndentingNewLine]", 
            RowBox[{"drawDispArc", "[", 
             RowBox[{"pt1in", ",", "disp", ",", "\[Theta]", ",", "Green"}], 
-            "]"}], ","}], "\[IndentingNewLine]", 
-          RowBox[{"(*", 
-           RowBox[{
-            RowBox[{"drawDispArc", "[", 
-             RowBox[{"pt2in", ",", "disp", ",", "\[Theta]", ",", "Red"}], 
-             "]"}], ",", "\[IndentingNewLine]", 
-            RowBox[{"drawDispArc", "[", 
-             RowBox[{"pt3in", ",", "disp", ",", "\[Theta]", ",", "Blue"}], 
-             "]"}]}], "*)"}], "\[IndentingNewLine]", "}"}], ",", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"drawDispArc", "[", 
+            RowBox[{"pt2in", ",", "disp", ",", "\[Theta]", ",", "Red"}], 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"drawDispArc", "[", 
+            RowBox[{"pt3in", ",", "disp", ",", "\[Theta]", ",", "Blue"}], 
+            "]"}]}], "\[IndentingNewLine]", "}"}], ",", 
          RowBox[{"PlotRange", "\[Rule]", 
           RowBox[{"1.4", 
            RowBox[{"{", 
@@ -1336,18 +1334,16 @@ Cell[BoxData[
    3.7115872963120604`*^9, 3.711587317795764*^9}, {3.711587348757676*^9, 
    3.71158735260126*^9}, {3.7115874710267506`*^9, 3.7115874876042285`*^9}, {
    3.7115876747975626`*^9, 3.7115878288135934`*^9}, {3.711588038603406*^9, 
-   3.7115880488716855`*^9}, {3.7115880952628264`*^9, 
-   3.7115880963330545`*^9}},ExpressionUUID->"46731ffe-18a6-4ee8-937d-\
+   3.7115880488716855`*^9}, {3.7115880952628264`*^9, 3.7115880963330545`*^9}, 
+   3.711672539105443*^9},ExpressionUUID->"46731ffe-18a6-4ee8-937d-\
 fdce815591d6"],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`disp$$ = 
-    0.22305307840487534`, $CellContext`pt1in$$ = {-0.6900000000000002, \
--0.2350000000000001}, $CellContext`pt2in$$ = {0.9599999999999997, 
-    0.7499999999999998}, $CellContext`pt3in$$ = {1, 
-    0}, $CellContext`\[Theta]$$ = -2.915397982531328, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`disp$$ = 0, $CellContext`pt1in$$ = {1, 
+    0}, $CellContext`pt2in$$ = {1, 0}, $CellContext`pt3in$$ = {1, 
+    0}, $CellContext`\[Theta]$$ = 0, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
@@ -1357,16 +1353,16 @@ Cell[BoxData[
        Hold[$CellContext`pt2in$$], {1, 0}}, Automatic}, {{
        Hold[$CellContext`pt3in$$], {1, 0}}, Automatic}}, Typeset`size$$ = {
     360., {177., 183.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`disp$35377$$ = 
-    0, $CellContext`\[Theta]$35378$$ = 0}, 
+    Typeset`skipInitDone$$ = True, $CellContext`disp$23679$$ = 
+    0, $CellContext`\[Theta]$23680$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, 
       "Variables" :> {$CellContext`disp$$ = 
         0, $CellContext`pt1in$$ = {1, 0}, $CellContext`pt2in$$ = {1, 
          0}, $CellContext`pt3in$$ = {1, 0}, $CellContext`\[Theta]$$ = 0}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`disp$$, $CellContext`disp$35377$$, 0], 
-        Hold[$CellContext`\[Theta]$$, $CellContext`\[Theta]$35378$$, 0]}, 
+        Hold[$CellContext`disp$$, $CellContext`disp$23679$$, 0], 
+        Hold[$CellContext`\[Theta]$$, $CellContext`\[Theta]$23680$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -1376,8 +1372,12 @@ Cell[BoxData[
           Circle[{0, 0}, 1.01], 
           PointSize[Large], 
           $CellContext`drawDispArc[$CellContext`pt1in$$, $CellContext`disp$$, \
-$CellContext`\[Theta]$$, Green], Null}, PlotRange -> 1.4 {{-1, 1}, {-1, 1}}]],
-       "Specifications" :> {{$CellContext`disp$$, 0, Rational[1, 2] Pi, 
+$CellContext`\[Theta]$$, Green], 
+          $CellContext`drawDispArc[$CellContext`pt2in$$, $CellContext`disp$$, \
+$CellContext`\[Theta]$$, Red], 
+          $CellContext`drawDispArc[$CellContext`pt3in$$, $CellContext`disp$$, \
+$CellContext`\[Theta]$$, Blue]}, PlotRange -> 1.4 {{-1, 1}, {-1, 1}}]], 
+      "Specifications" :> {{$CellContext`disp$$, 0, Rational[1, 2] Pi, 
          Appearance -> "Labeled"}, {{$CellContext`\[Theta]$$, 0}, -Pi, Pi, 
          Appearance -> "Labeled"}, {{$CellContext`pt1in$$, {1, 0}}, Automatic,
           ControlType -> Locator, Appearance -> 
@@ -1385,7 +1385,7 @@ $CellContext`\[Theta]$$, Green], Null}, PlotRange -> 1.4 {{-1, 1}, {-1, 1}}]],
          Locator, Appearance -> None}, {{$CellContext`pt3in$$, {1, 0}}, 
          Automatic, ControlType -> Locator, Appearance -> None}}, 
       "Options" :> {}, "DefaultOptions" :> {}],
-     ImageSizeCache->{417., {241., 247.}},
+     ImageSizeCache->{417., {240., 247.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -1396,9 +1396,65 @@ $CellContext`\[Theta]$$, Green], Null}, PlotRange -> 1.4 {{-1, 1}, {-1, 1}}]],
    Deployed->True,
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
- CellChangeTimes->{3.7115878652052565`*^9, 3.711588060486307*^9, 
-  3.711588100097474*^9},ExpressionUUID->"4049e311-c511-4b80-93ea-\
-176940cb8380"]
+ CellChangeTimes->{
+  3.7115878652052565`*^9, 3.711588060486307*^9, 3.711588100097474*^9, 
+   3.7116672088936586`*^9, {3.7116725222883015`*^9, 3.7116725398086042`*^9}, 
+   3.7116726083709574`*^9, 
+   3.711673003232724*^9},ExpressionUUID->"5ade6bd4-b12e-43b5-820e-\
+4d58c88e632c"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Module","dup",
+   "\"Duplicate local variable \\!\\(\\*RowBox[{\\\"aL$\\\"}]\\) found in \
+local variable specification \\!\\(\\*RowBox[{\\\"{\\\", RowBox[{\\\"aL$\\\", \
+\\\",\\\", \\\"aR$\\\", \\\",\\\", \\\"pt$\\\", \\\",\\\", \\\"ptAng$\\\", \\\
+\",\\\", \\\"\[Beta]L$\\\", \\\",\\\", \\\"\[Beta]R$\\\", \\\",\\\", \
+\\\"aL$\\\", \\\",\\\", \\\"aR$\\\"}], \\\"}\\\"}]\\).\"",2,89,127,
+   19256403961861994511,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.711673140902114*^9},ExpressionUUID->"9d0fd736-a32c-4973-82a0-\
+b03c4f1b7b93"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Module","dup",
+   "\"Duplicate local variable \\!\\(\\*RowBox[{\\\"aL$\\\"}]\\) found in \
+local variable specification \\!\\(\\*RowBox[{\\\"{\\\", RowBox[{\\\"aL$\\\", \
+\\\",\\\", \\\"aR$\\\", \\\",\\\", \\\"pt$\\\", \\\",\\\", \\\"ptAng$\\\", \\\
+\",\\\", \\\"\[Beta]L$\\\", \\\",\\\", \\\"\[Beta]R$\\\", \\\",\\\", \
+\\\"aL$\\\", \\\",\\\", \\\"aR$\\\"}], \\\"}\\\"}]\\).\"",2,89,128,
+   19256403961861994511,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.7116731410583663`*^9},ExpressionUUID->"8ac42f89-3596-467d-99dc-\
+c5d1def09c71"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Module","dup",
+   "\"Duplicate local variable \\!\\(\\*RowBox[{\\\"aL$\\\"}]\\) found in \
+local variable specification \\!\\(\\*RowBox[{\\\"{\\\", RowBox[{\\\"aL$\\\", \
+\\\",\\\", \\\"aR$\\\", \\\",\\\", \\\"pt$\\\", \\\",\\\", \\\"ptAng$\\\", \\\
+\",\\\", \\\"\[Beta]L$\\\", \\\",\\\", \\\"\[Beta]R$\\\", \\\",\\\", \
+\\\"aL$\\\", \\\",\\\", \\\"aR$\\\"}], \\\"}\\\"}]\\).\"",2,89,129,
+   19256403961861994511,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.7116731412146225`*^9},ExpressionUUID->"94512a7f-929f-4c24-b517-\
+b0f46f6fc0f8"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "General","stop",
+   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"Module\\\", \\\"::\\\", \
+\\\"dup\\\"}], \\\"MessageName\\\"]\\) will be suppressed during this \
+calculation.\"",2,89,130,19256403961861994511,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.711673141355256*^9},ExpressionUUID->"b689022e-8dd9-4b48-a52d-\
+24eae62fdd49"]
 }, Open  ]]
 }, Open  ]],
 
@@ -1430,8 +1486,8 @@ input: selecting a starting arc, button that \[OpenCurlyQuote]moves\
 10407589f3d1"]
 }, Open  ]]
 },
-WindowSize->{1368, 829},
-WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+WindowSize->{958, 988},
+WindowMargins->{{-7, Automatic}, {Automatic, 0}},
 Magnification->1.,
 FrontEndVersion->"11.1 for Microsoft Windows (64-bit) (April 18, 2017)",
 StyleDefinitions->"Default.nb"
@@ -1453,16 +1509,24 @@ Cell[CellGroupData[{
 Cell[903, 31, 163, 3, 51, "Subchapter", "ExpressionUUID" -> \
 "f767afaf-62e1-4f0b-a4ec-8beb8acdf1ad"],
 Cell[CellGroupData[{
-Cell[1091, 38, 304, 7, 79, "Subsection", "ExpressionUUID" -> \
+Cell[1091, 38, 304, 7, 109, "Subsection", "ExpressionUUID" -> \
 "7e784864-c163-4985-ba77-37765a2dcf48"],
 Cell[CellGroupData[{
-Cell[1420, 49, 52537, 1291, 2710, "Input", "ExpressionUUID" -> \
+Cell[1420, 49, 52498, 1289, 2919, "Input", "ExpressionUUID" -> \
 "46731ffe-18a6-4ee8-937d-fdce815591d6"],
-Cell[53960, 1342, 3105, 58, 538, "Output", "ExpressionUUID" -> \
-"4049e311-c511-4b80-93ea-176940cb8380"]
+Cell[53921, 1340, 3343, 63, 504, "Output", "ExpressionUUID" -> \
+"5ade6bd4-b12e-43b5-820e-4d58c88e632c"],
+Cell[57267, 1405, 597, 12, 21, "Message", "ExpressionUUID" -> \
+"9d0fd736-a32c-4973-82a0-b03c4f1b7b93"],
+Cell[57867, 1419, 599, 12, 21, "Message", "ExpressionUUID" -> \
+"8ac42f89-3596-467d-99dc-c5d1def09c71"],
+Cell[58469, 1433, 599, 12, 21, "Message", "ExpressionUUID" -> \
+"94512a7f-929f-4c24-b517-b0f46f6fc0f8"],
+Cell[59071, 1447, 399, 9, 21, "Message", "ExpressionUUID" -> \
+"b689022e-8dd9-4b48-a52d-24eae62fdd49"]
 }, Open  ]]
 }, Open  ]],
-Cell[57092, 1404, 1443, 25, 405, "Section", "ExpressionUUID" -> \
+Cell[59497, 1460, 1443, 25, 527, "Section", "ExpressionUUID" -> \
 "dcf87ca7-4622-49ce-983b-10407589f3d1"]
 }, Open  ]]
 }
