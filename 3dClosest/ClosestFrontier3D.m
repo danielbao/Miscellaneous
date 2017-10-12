@@ -1,4 +1,4 @@
-function [movecount,k,nodecount] = ClosestFrontier3D(k,itr)
+function [movecount,k,nodecount] = ClosestFrontier3D(k,itr,number)
 % ClosestFrontier is a demonstration of mapping of a completely connected
 % and bounded 2D discrete grid space with k particles that move uniformly.
 % The permissible moves are left, right, up and down. Each move is one pixel
@@ -20,18 +20,20 @@ function [movecount,k,nodecount] = ClosestFrontier3D(k,itr)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global G;
 if nargin<1
-    k = 1000;%num particles
+    k = 100;%num particles
     itr=1;
+    number=1;
 end
 vox_sz = [1,1,1]; %length of cube sides
-G.fig = figure(1);
+G.fig = figure(number);
 set(gcf,'Renderer','OpenGL');
-G.mapnum =30;%22;
+G.mapnum =27;%22;
 G.movecount = 0;
 G.movetyp = [-1,0,0;0,1,0;1,0,0;0,-1,0;0,0,1;0,0,-1;];
 movecount=G.movecount;
 G.drawflag=1; % Default 1, draw G.fig 'on'. Set 0 for draw G.fig 'off'.
-G.videoflag=1;
+G.videoflag=0;
+G.playflag=1;
 clc
 %% Making a video demonstration. makemymovie gets the current frame of imge and adds to video file
 format compact
@@ -49,6 +51,14 @@ open(writerObj);
     end
 %% Setup map, matrices and initite mapping
 [G.obstacle_pos,G.free,G.robvec,G.Moves] = SetupWorld(G.mapnum);
+if(G.playflag==1)
+    % Define joystick ID (if only using 1 joystick, this will likely be '1')
+    ID = 1;
+    % Create joystick variable
+    joy=vrjoystick(ID);
+    t = timer('ExecutionMode', 'fixedRate', 'Period', 0.1, 'TimerFcn', @t_Callback);
+    start(t);
+end
 set(G.fig ,'KeyPressFcn',@keyhandler,'Name','Massive Control','color','w')
 G.maxX = size(G.obstacle_pos,2);
 G.maxY = size(G.obstacle_pos,1);
@@ -77,8 +87,10 @@ hold on
 
 
 %End of initialization
-CF() % Closest Frontier mapping algorithm
- for rest=1:30
+if(G.playflag==0)
+    CF()% Closest Frontier mapping algorithm
+end
+for rest=1:30
       view([-80-rest/3, 30+rest*2]);
             makemymovie()
            
@@ -207,8 +219,86 @@ CF() % Closest Frontier mapping algorithm
 %                  drawcirc()
             end
             drawnow
-            makemymovie()
+            if G.videoflag==1
+               makemymovie() 
+            end
         end
+    end
+    function t_Callback(~,~)
+        try
+            mv=0;%Reset move selector
+            Y=axis(joy, 1);     % X-axis is joystick axis 1
+            X=axis(joy, 2);     % Y-axis is joystick axis 2
+            %Confusing but it currently works!
+            up=button(joy, 5);  % Pressed R
+            down=button(joy, 6);% Pressed L
+            endflag=button(joy,9); %Pressed X
+            reset=button(joy,10); %Reset button to redraw map
+            if(reset>=0.1)
+                [G.obstacle_pos,G.free,G.robvec,G.Moves] = SetupWorld(G.mapnum);
+                randRobots=randperm(numel(G.robvec)); %randRobots: 1:num_empty_spaces, randomly arranged
+                G.robvec(randRobots(k+1:end))=0; % locations of the k robots
+                
+                RobotVisits=zeros(size(G.obstacle_pos)); %Set blind map to zeros. We want to build path in this map
+                map_expected=zeros(size(G.obstacle_pos)); %Set zeros initially. We update the expected location if each particle in this map
+                mapped_obstacles=zeros(size(G.obstacle_pos)); %Map is updated when obstacles are found
+                frontier_exp= zeros(size(G.obstacle_pos)); %Map to update the locations of frontiers
+                updateMap() %Update the map with the information from all the seperate maps
+            end
+            if Y<=-0.1
+                mv = 2;
+            elseif Y>=0.1
+                mv = 1;
+            elseif X<=-0.1
+                mv = 3;
+            elseif X>=0.1
+                mv = 4;
+            elseif up>=0.1
+                mv = 5;
+            elseif down>=0.1
+                mv = 6;
+            end
+            if(endflag>=0.1)
+                stop(t);
+            end
+            movetomv(mv);
+        catch
+            joy = vrjoystick(1);
+            disp('Error');
+            return;
+        end
+    end
+    function movetomv(mv)
+        if mv>0
+            map_expected=G.im2;
+            G.movecount = G.movecount+1;
+            % map_expected has 1 where robot is expected to be
+            if mv==1
+                map_expected = circshift(map_expected,[0 -1 0]);
+            elseif mv==2
+                map_expected = circshift(map_expected,[0 1 0]);
+            elseif mv==3
+                map_expected = circshift(map_expected,[1 0 0]);
+            elseif mv==4
+                map_expected = circshift(map_expected,[-1 0 0]);
+            elseif mv==5
+                map_expected = circshift(map_expected,[0 0 -1]);
+            elseif mv==6
+                map_expected = circshift(map_expected,[0 0 1]);
+            end
+            %G.movecount = G.movecount+1;
+            G.robvec = applyMove(mv, G.robvec);
+            updateMap()
+            updateTitle()
+            if G.drawflag==1
+%                  drawcirc()
+            end
+            drawnow
+            if G.videoflag==1
+                makemymovie()
+            end
+        end        
+        
     end
 %% Updating the map
     function updateMap()
