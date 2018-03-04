@@ -33,7 +33,7 @@ G.movetyp = [-1,0,0;0,1,0;1,0,0;0,-1,0;0,0,1;0,0,-1;];
 movecount=G.movecount;
 G.drawflag=1; % Default 1, draw G.fig 'on'. Set 0 for draw G.fig 'off'.
 G.videoflag=0;
-G.playflag=1;
+G.playflag=0;
 clc
 %% Making a video demonstration. makemymovie gets the current frame of imge and adds to video file
 format compact
@@ -82,7 +82,7 @@ axis equal
 axis tight
 updateTitle() %Update the values displayed in the title
 hold on
- makemymovie()
+makemymovie()
 
 
 
@@ -91,15 +91,15 @@ if(G.playflag==0)
     CF()% Closest Frontier mapping algorithm
 end
 for rest=1:30
-      view([-80-rest/3, 30+rest*2]);
-            makemymovie()
-           
+    view([-80-rest/3, 30+rest*2]);
+    makemymovie()
+    
+end
+ for rest=1:60
+     view([-90, 90]);
+     makemymovie()
+     
  end
-        for rest=1:60
-      view([-90, 90]);
-            makemymovie()
-           
-        end
 %% CF repeatedly moves particles to frontier cells until there are no more frontier cells left
     function CF()
         iter=1;
@@ -129,7 +129,7 @@ for rest=1:30
     function nodes(robIndex)
         %For each robot, check if the cell in direction mv is unknown
         for mv_type=1:6
-            for c = 1:numel(robIndex);
+            for c = 1:numel(robIndex)
                 i2 = G.ri(robIndex(c))+G.movetyp(mv_type,2);
                 j2 = G.ci(robIndex(c))+G.movetyp(mv_type,1);
                 h2= G.hi(robIndex(c))+G.movetyp(mv_type,3);
@@ -290,9 +290,6 @@ for rest=1:30
             G.robvec = applyMove(mv, G.robvec);
             updateMap()
             updateTitle()
-            if G.drawflag==1
-%                  drawcirc()
-            end
             drawnow
             if G.videoflag==1
                 makemymovie()
@@ -326,41 +323,41 @@ for rest=1:30
         G.covered=find(current_map==0);
  clf       
  draw3d()
-
+ 
  [G.robscatx,G.robscaty,G.robscatz]=find(current_map== 2);
-%  scatter3(G.robscatx,G.robscaty,G.robscatz);
-%         colormap(G.colormap(unique(current_map)+1,:));
-
-
-        if G.drawflag==0
-            G.axis=imagesc(current_map); %show map that updates as robots explore
-        end
+ %  scatter3(G.robscatx,G.robscaty,G.robscatz);
+ %         colormap(G.colormap(unique(current_map)+1,:));
+ 
+ 
+ if G.drawflag==0
+     G.axis=imagesc(current_map); %show map that updates as robots explore
+ end
     end
     function draw3d()
         figure(G.fig)
         [x,y,z]=ind2sub(size(G.update_map),G.obstacles);
- obspts=[x,y,z];
-% voxel_image(obspts,vox_sz,'g',0.1,'g');
-hold on
- locs=find(G.update_map==1);
-[x,y,z]=ind2sub(size(G.update_map),locs);
-GoalPts=[x,y,z];
-voxel_image(GoalPts, vox_sz,[0.9,0.9,0.9],0);
-[x,y,z]=ind2sub(size(G.update_map),G.boundvec);
- frontier=[x,y,z];
- voxel_image(frontier, vox_sz,'b',0.3);
- [x,y,z]=ind2sub(size(G.update_map), G.covered);
-covered=[x,y,z];
-voxel_image(covered, vox_sz,[1 1 1],0.1,'r');
- [x,y,z]=ind2sub(size(G.update_map),G.roboloc);
- RobotPts=[x,y,z];
-voxel_image(RobotPts, vox_sz,'r',1);
-
-axis equal
-axis off;
-view([-80, 30]);
-hold off
-drawnow()
+        obspts=[x,y,z];
+        % voxel_image(obspts,vox_sz,'g',0.1,'g');
+        hold on
+        locs=find(G.update_map==1);
+        [x,y,z]=ind2sub(size(G.update_map),locs);
+        GoalPts=[x,y,z];
+        voxel_image(GoalPts, vox_sz,[0.9,0.9,0.9],0);
+        [x,y,z]=ind2sub(size(G.update_map),G.boundvec);
+        frontier=[x,y,z];
+        voxel_image(frontier, vox_sz,'b',0.3);
+        [x,y,z]=ind2sub(size(G.update_map), G.covered);
+        covered=[x,y,z];
+        voxel_image(covered, vox_sz,[1 1 1],0.1,'r');
+        [x,y,z]=ind2sub(size(G.update_map),G.roboloc);
+        RobotPts=[x,y,z];
+        voxel_image(RobotPts, vox_sz,'r',1);
+        
+        axis equal
+        axis off;
+        view([-80, 30]);
+        hold off
+        drawnow()
     end
 %% Update title when called
     function updateTitle()
