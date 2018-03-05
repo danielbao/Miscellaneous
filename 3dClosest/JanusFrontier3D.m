@@ -1,4 +1,4 @@
-function [movecount,k,nodecount] = JanusFrontier3D(k,itr,max_steps,map,config_flag,fill_flag,fill,p1,p2,p3,p4,p5,p6,starting_config)
+function [movecount,k,nodecount,init_config] = JanusFrontier3D(k,itr,max_steps,map,config_flag,fill_flag,fill,p1,p2,p3,p4,p5,p6,starting_config)
 % ClosestFrontier is a demonstration of mapping of a completely connected
 % and bounded 2D discrete grid space with k particles that move uniformly.
 % The permissible moves are left, right, up and down. Each move is one pixel
@@ -23,13 +23,20 @@ if nargin<1
     k = 100;%num particles
     itr=1;
     number=1;
+    map=0;
     max_steps=250;
-    p1=0.25,p2=0.25,p3=0.25,p4=0.25,p5=0,p6=0;
+    p1=0.25;
+    p2=0.25;
+    p3=0.25;
+    p4=0.25;
+    p5=0;
+    p6=0;
+    config_flag=0;
 end
 vox_sz = [1,1,1]; %length of cube sides
 G.fig = figure(number);
 set(gcf,'Renderer','OpenGL');
-if G.mapnum==0
+if map==0
     G.mapnum=27;%22
 else
     G.mapnum=map;
@@ -44,11 +51,11 @@ G.movetyp = [-1,0,0;%-y
 movecount=G.movecount;
 G.drawflag=1; % Default 1, draw G.fig 'on'. Set 0 for draw G.fig 'off'.
 G.videoflag=0;
-G.playflag=0;
+G.playflag=1;
 clc
 %% Making a video demonstration. makemymovie gets the current frame of imge and adds to video file
 format compact
-MOVIE_NAME =['Leaf_Mapping_3D',num2str(G.mapnum),'_',num2str(k),'robots','_video with p1',num2str(p1)]; %Change video name here
+MOVIE_NAME =['Leaf_Mapping_3D',num2str(G.mapnum),'_',num2str(k),'robots itr',num2str(itr),'_video with p1',num2str(p1)]; %Change video name here
 writerObj = VideoWriter(MOVIE_NAME,'MPEG-4');%http://www.mathworks.com/help/matlab/ref/videowriterclass.html
 set(writerObj,'Quality',100);
 writerObj.FrameRate=30;
@@ -63,12 +70,13 @@ open(writerObj);
 %% Setup map, matrices and initite mapping
 [G.obstacle_pos,G.free,G.robvec,G.Moves] = SetupWorld(G.mapnum);
 if(G.playflag==1)
-    % Define joystick ID (if only using 1 joystick, this will likely be '1')
-    ID = 1;
-    % Create joystick variable
-    joy=vrjoystick(ID);
-    t = timer('ExecutionMode', 'fixedRate', 'Period', 0.1, 'TimerFcn', @t_Callback);
-    start(t);
+%     % Define joystick ID (if only using 1 joystick, this will likely be '1')
+%     ID = 1;
+%     % Create joystick variable
+%     joy=vrjoystick(ID);
+%     t = timer('ExecutionMode', 'fixedRate', 'Period', 0.1, 'TimerFcn', @t_Callback);
+%     start(t);
+%Uncomment this for joystick use!
 end
 set(G.fig ,'KeyPressFcn',@keyhandler,'Name','Massive Control','color','w')
 G.maxX = size(G.obstacle_pos,2);
@@ -92,16 +100,16 @@ G.type4loc=zeros(size(G.robvec));
 G.type5loc=zeros(size(G.robvec));
 G.type6loc=zeros(size(G.robvec));
 
-G.type1loc(randRobots(1:ceil(k*p1)))=1;
-randRobots(1:ceil(k*p1))=[];
-G.type2loc(randRobots(1:ceil(k*p2)))=1;
-randRobots(1:ceil(k*p2)-1)=[];
-G.type3loc(randRobots(1:ceil(k*p3)))=1;
-randRobots(1:ceil(k*p3))=[];
-G.type4loc(randRobots(1:ceil(k*p4)))=1;
-randRobots(1:ceil(k*p4)-1)=[];
-G.type1loc(randRobots(1:ceil(k*p5)))=1;
-randRobots(1:ceil(k*p5))=[];
+G.type1loc(randRobots(1:round(k*p1)))=1;
+randRobots(1:round(k*p1))=[];
+G.type2loc(randRobots(1:round(k*p2)))=1;
+randRobots(1:round(k*p2)-1)=[];
+G.type3loc(randRobots(1:round(k*p3)))=1;
+randRobots(1:round(k*p3))=[];
+G.type4loc(randRobots(1:round(k*p4)))=1;
+randRobots(1:round(k*p4)-1)=[];
+G.type1loc(randRobots(1:round(k*p5)))=1;
+randRobots(1:round(k*p5))=[];
 G.type1loc(randRobots(1:ceil(k*p6)))=1;
 %Initialized by the probability distributions of each species
 %6 species locations initialized!!
@@ -148,7 +156,13 @@ end
         iter=1;
         while(nnz(frontier_exp)>0&&movecount<max_steps)
             frontier_vec=G.boundvec; %current locations of frontiers
-            roboloc=G.roboloc; %current locations of particles
+            roboloc=G.roboloc; %Refresh local locations to global current locations of robots
+            temp1loc=G.ind1;
+            temp2loc=G.ind2;
+            temp3loc=G.ind3;
+            temp4loc=G.ind4;
+            temp5loc=G.ind5;
+            temp6loc=G.ind6;
             moveSeq = DijkstraForBoundary_mod3D(G.update_map,roboloc,frontier_vec); %the shortest path to a frontier cell selected by expanding from particles
             steps = min(inf,numel(moveSeq));
             for mvIn =1:steps
@@ -389,8 +403,8 @@ end
 
 %% takes input from user
     function keyhandler(src,evnt) %#ok<INUSL>
-        if strcmp(evnt.Key,'s')
-            imwrite(flipud(get(G.axis,'CData')+1), G.colormap, '../../pictures/png/MatrixPermutePic.png');
+        if strcmp(evnt.Key,'q')
+            imwrite(flipud(get(G.axis,'CData')+1), G.colormap, 'MatrixPermutePic.png');
         else
             moveto(evnt.Key)
         end
@@ -430,7 +444,7 @@ end
                 map_expected = circshift(map_expected,[0 0 1]);
             end
             %G.movecount = G.movecount+1;
-            G.robvec = applyMove(mv, G.robvec);
+            [G.type1loc, G.type2loc, G.type3loc, G.type4loc, G.type5loc, G.type6loc]= applyMove(mv, G.type1loc, G.type2loc, G.type3loc, G.type4loc, G.type5loc, G.type6loc);%Move robots and put it in actual positions
             updateMap()
             updateTitle()
             if G.drawflag==1
@@ -609,6 +623,12 @@ end
         frontier_exp(mapped_obstacles)=0;
         current_map(frontier_exp==1)=4; % 4 = frontier cells
         current_map(mapped_obstacles==1)=3; % 3 = obstacles
+        G.ind1=find(current_map==11);
+        G.ind2=find(current_map==12);
+        G.ind3=find(current_map==13);
+        G.ind4=find(current_map==14);
+        G.ind5=find(current_map==15);
+        G.ind6=find(current_map==16);
         G.update_map=zeros(size(current_map));
         G.update_map(current_map==3)=1;
         G.update_map(current_map==1)=1;
@@ -619,20 +639,20 @@ end
  clf       
  draw3d()
  
- [G.robscatx,G.robscaty,G.robscatz]=find(current_map== 2);
+%  [G.robscatx,G.robscaty,G.robscatz]=find(current_map== 2);
  %  scatter3(G.robscatx,G.robscaty,G.robscatz);
  %         colormap(G.colormap(unique(current_map)+1,:));
  
  
- if G.drawflag==0
-     G.axis=imagesc(current_map); %show map that updates as robots explore
- end
+%  if G.drawflag==0
+%      G.axis=imagesc(current_map); %show map that updates as robots explore
+%  end
     end
     function draw3d()
         figure(G.fig)
-        [x,y,z]=ind2sub(size(G.update_map),G.obstacles);
-        obspts=[x,y,z];
-        % voxel_image(obspts,vox_sz,'g',0.1,'g');
+%         [x,y,z]=ind2sub(size(G.update_map),G.obstacles);
+%         obspts=[x,y,z];
+%         voxel_image(obspts,vox_sz,'g',0.1,'g');
         hold on
         locs=find(G.update_map==1);
         [x,y,z]=ind2sub(size(G.update_map),locs);
@@ -644,10 +664,24 @@ end
         [x,y,z]=ind2sub(size(G.update_map), G.covered);
         covered=[x,y,z];
         voxel_image(covered, vox_sz,[1 1 1],0.1,'r');
-        [x,y,z]=ind2sub(size(G.update_map),G.roboloc);
-        RobotPts=[x,y,z];
-        voxel_image(RobotPts, vox_sz,'r',1);
-        
+        [x,y,z]=ind2sub(size(G.update_map),G.ind1);
+        Robot1Pts=[x,y,z];
+        voxel_image(Robot1Pts, vox_sz,'r',1);
+        [x,y,z]=ind2sub(size(G.update_map),G.ind2);
+        Robot2Pts=[x,y,z];
+        voxel_image(Robot2Pts, vox_sz,'g',1);  
+        [x,y,z]=ind2sub(size(G.update_map),G.ind3);
+        Robot3Pts=[x,y,z];
+        voxel_image(Robot3Pts, vox_sz,[0.5 0 1],1);
+        [x,y,z]=ind2sub(size(G.update_map),G.ind4);
+        Robot4Pts=[x,y,z];
+        voxel_image(Robot4Pts, vox_sz,'c',1);
+        [x,y,z]=ind2sub(size(G.update_map),G.ind5);
+        Robot5Pts=[x,y,z];
+        voxel_image(Robot5Pts, vox_sz,'m',1);   
+        [x,y,z]=ind2sub(size(G.update_map),G.ind6);
+        Robot6Pts=[x,y,z];
+        voxel_image(Robot6Pts, vox_sz,'y',1);
         axis equal
         axis off;
         view([-80, 30]);
