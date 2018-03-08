@@ -25,10 +25,10 @@ if nargin<1
     number=1;
     map=0;
     max_steps=250;
-    p1=0.25;
-    p2=0.25;
-    p3=0.25;
-    p4=0.25;
+    p1=1;
+    p2=0;
+    p3=0;
+    p4=0;
     p5=0;
     p6=0;
     config_flag=0;
@@ -124,7 +124,7 @@ map_5=zeros(size(G.obstacle_pos));
 map_6=zeros(size(G.obstacle_pos));
 
 RobotVisits=zeros(size(G.obstacle_pos)); %Set blind map to zeros. We want to build path in this map
-map_expected=zeros(size(G.obstacle_pos)); %Set zeros initially. We update the expected location if each particle in this map
+map_1=zeros(size(G.obstacle_pos)); %Set zeros initially. We update the expected location if each particle in this map
 mapped_obstacles=zeros(size(G.obstacle_pos)); %Map is updated when obstacles are found
 frontier_exp= zeros(size(G.obstacle_pos)); %Map to update the locations of frontiers
 updateMap() %Update the map with the information from all the seperate maps
@@ -190,7 +190,7 @@ end
                 i2 = G.ri(robIndex(c))+G.movetyp(mv_type,2);
                 j2 = G.ci(robIndex(c))+G.movetyp(mv_type,1);
                 h2= G.hi(robIndex(c))+G.movetyp(mv_type,3);
-                % if the cell has neer been visited and isn't an obstacle
+                % if the cell has never been visited and isn't an obstacle
                 if RobotVisits(i2,j2,h2) == 0 && mapped_obstacles(i2,j2,h2) == 0
                     frontier_exp(i2,j2,h2)=1;
                 else
@@ -210,14 +210,21 @@ end
         rvec5Out = zeros(size(rvec5In));
         rvec6Out = zeros(size(rvec6In));
         switch mv
+            % Move matrix is this
+            %1 left (actually right)
+            %2 right (actually left)
+            %3 down?
+            %4 up
+            %5 +z
+            %6 -z
             case 1
-                mv2=5;
-                mv3=4;
-                mv4=2;
+                mv2=4;
+                mv3=2;
+                mv4=3;
                 mv5=6;
-                mv6=3;
+                mv6=5;
             case 2
-                mv2=6;
+                mv2=3;
                 mv3=3;
                 mv4=1;
                 mv5=5;
@@ -241,7 +248,7 @@ end
                 mv5=3;
                 mv6=1;
             case 6
-                mv2=3;
+                mv2=4;
                 mv3=1;
                 mv4=5;
                 mv5=4;
@@ -403,7 +410,8 @@ end
 
 %% takes input from user
     function keyhandler(src,evnt) %#ok<INUSL>
-        if strcmp(evnt.Key,'q')
+        if strcmp(evnt.Key,'q')%Q allows us to capture a screenshot of all the stuff I think
+            %Not sure if it works!
             imwrite(flipud(get(G.axis,'CData')+1), G.colormap, 'MatrixPermutePic.png');
         else
             moveto(evnt.Key)
@@ -414,42 +422,44 @@ end
         G.movecount = G.movecount+1;
         mv=0;
         if strcmp(key,'leftarrow') || strcmp(key,'l')|| strcmp(key,'1')  %-x
-            mv = 1;
-        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
             mv = 2;
+        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
+            mv = 1;
         elseif strcmp(key,'uparrow')|| strcmp(key,'u')|| strcmp(key,'3')  %+y
             mv = 3;
         elseif strcmp(key,'downarrow')|| strcmp(key,'d') || strcmp(key,'4') %-y
             mv = 4;
-        elseif strcmp(key,'n') || strcmp(key,'5') %-y
-            mv = 5;
-        elseif strcmp(key,'s') || strcmp(key,'6') %-y
-            mv = 6;    
+        elseif strcmp(key,'n') || strcmp(key,'5') %+z
+            mv = 6;
+        elseif strcmp(key,'s') || strcmp(key,'6') %-z
+            mv = 5;    
         end
         if mv>0
-            map_expected=G.im2;
+            map_1=G.im2;
             
             % map_expected has 1 where robot is expected to be
             if mv==1
-                map_expected = circshift(map_expected,[0 -1 0]);
+                map_1 = circshift(map_1,[0 -1 0]);
+                map_2 = circshift(map_2,[-1 0 0]);%shift type 2 map down by 1
+                map_3 = circshift(map_3,[0 1 0]);
+                map_4 = circshift(map_4,[1 0 0]);
+                map_5 = circshift(map_5,[0 0 1]);
+                map_6 = circshift(map_6, [0 0 -1]);
             elseif mv==2
-                map_expected = circshift(map_expected,[0 1 0]);
+                map_1 = circshift(map_1,[0 1 0]);
             elseif mv==3
-                map_expected = circshift(map_expected,[1 0 0]);
+                map_1 = circshift(map_1,[1 0 0]);
             elseif mv==4
-                map_expected = circshift(map_expected,[-1 0 0]);
+                map_1 = circshift(map_1,[-1 0 0]);
             elseif mv==5
-                map_expected = circshift(map_expected,[0 0 -1]);
+                map_1 = circshift(map_1,[0 0 -1]);
             elseif mv==6
-                map_expected = circshift(map_expected,[0 0 1]);
+                map_1 = circshift(map_1,[0 0 1]);
             end
             %G.movecount = G.movecount+1;
             [G.type1loc, G.type2loc, G.type3loc, G.type4loc, G.type5loc, G.type6loc]= applyMove(mv, G.type1loc, G.type2loc, G.type3loc, G.type4loc, G.type5loc, G.type6loc);%Move robots and put it in actual positions
             updateMap()
             updateTitle()
-            if G.drawflag==1
-%                  drawcirc()
-            end
             drawnow
             if G.videoflag==1
                makemymovie() 
@@ -472,7 +482,7 @@ end
                 G.robvec(randRobots(k+1:end))=0; % locations of the k robots
                 
                 RobotVisits=zeros(size(G.obstacle_pos)); %Set blind map to zeros. We want to build path in this map
-                map_expected=zeros(size(G.obstacle_pos)); %Set zeros initially. We update the expected location if each particle in this map
+                map_1=zeros(size(G.obstacle_pos)); %Set zeros initially. We update the expected location if each particle in this map
                 mapped_obstacles=zeros(size(G.obstacle_pos)); %Map is updated when obstacles are found
                 frontier_exp= zeros(size(G.obstacle_pos)); %Map to update the locations of frontiers
                 updateMap() %Update the map with the information from all the seperate maps
@@ -518,7 +528,7 @@ end
             map_5=G.im2==5;
             map_6=G.im2==6;
             %This gets a logical matrix which we can perform circ shift on
-            map_expected=G.im2;%im2 is the local particle location matrix
+            map_1=G.im2;%im2 is the local particle location matrix
             %updates every call to updateMap()
             G.movecount = G.movecount+1;%Increment movecount everytime a move is applied
             %Approach to solve this problem
@@ -612,14 +622,14 @@ end
         nodes(robIndex);
         current_map(RobotVisits==0)=1; % 1= undiscovered
         frontier_exp(current_map==11 | current_map ==12 | current_map ==13 | current_map ==14 | current_map ==15 | current_map ==16)=0;
-        map_expected(current_map~=1)=0;
+        map_1(current_map~=1)=0;
         map_1(current_map~=1)=0;
         map_2(current_map~=1)=0;
         map_3(current_map~=1)=0;
         map_4(current_map~=1)=0;
         map_5(current_map~=1)=0;
         map_6(current_map~=1)=0;
-        mapped_obstacles = mapped_obstacles | map_expected | map_1 | map_2 | map_3 | map_4| map_5 | map_6;%OR the expected and mapped obstacles to update obstacles
+        mapped_obstacles = mapped_obstacles | map_1 | map_1 | map_2 | map_3 | map_4| map_5 | map_6;%OR the expected and mapped obstacles to update obstacles
         frontier_exp(mapped_obstacles)=0;
         current_map(frontier_exp==1)=4; % 4 = frontier cells
         current_map(mapped_obstacles==1)=3; % 3 = obstacles

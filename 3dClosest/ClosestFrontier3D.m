@@ -33,7 +33,7 @@ G.movetyp = [-1,0,0;0,1,0;1,0,0;0,-1,0;0,0,1;0,0,-1;];
 movecount=G.movecount;
 G.drawflag=1; % Default 1, draw G.fig 'on'. Set 0 for draw G.fig 'off'.
 G.videoflag=0;
-G.playflag=0;
+G.playflag=1;
 clc
 %% Making a video demonstration. makemymovie gets the current frame of imge and adds to video file
 format compact
@@ -52,12 +52,12 @@ open(writerObj);
 %% Setup map, matrices and initite mapping
 [G.obstacle_pos,G.free,G.robvec,G.Moves] = SetupWorld(G.mapnum);
 if(G.playflag==1)
-    % Define joystick ID (if only using 1 joystick, this will likely be '1')
-    ID = 1;
-    % Create joystick variable
-    joy=vrjoystick(ID);
-    t = timer('ExecutionMode', 'fixedRate', 'Period', 0.1, 'TimerFcn', @t_Callback);
-    start(t);
+%     % Define joystick ID (if only using 1 joystick, this will likely be '1')
+%     ID = 1;
+%     % Create joystick variable
+%     joy=vrjoystick(ID);
+%     t = timer('ExecutionMode', 'fixedRate', 'Period', 0.1, 'TimerFcn', @t_Callback);
+%     start(t);
 end
 set(G.fig ,'KeyPressFcn',@keyhandler,'Name','Massive Control','color','w')
 G.maxX = size(G.obstacle_pos,2);
@@ -171,7 +171,7 @@ end
 
 %% takes input from user
     function keyhandler(src,evnt) %#ok<INUSL>
-        if strcmp(evnt.Key,'s')
+        if strcmp(evnt.Key,'q')
             imwrite(flipud(get(G.axis,'CData')+1), G.colormap, '../../pictures/png/MatrixPermutePic.png');
         else
             moveto(evnt.Key)
@@ -182,9 +182,9 @@ end
         G.movecount = G.movecount+1;
         mv=0;
         if strcmp(key,'leftarrow') || strcmp(key,'l')|| strcmp(key,'1')  %-x
-            mv = 1;
-        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
             mv = 2;
+        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
+            mv = 1;
         elseif strcmp(key,'uparrow')|| strcmp(key,'u')|| strcmp(key,'3')  %+y
             mv = 3;
         elseif strcmp(key,'downarrow')|| strcmp(key,'d') || strcmp(key,'4') %-y
