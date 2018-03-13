@@ -147,7 +147,16 @@ end
 %% Apply move called by moveto to all the robots
     function rvec2 = applyMove(mv, rvecIn)
         rvec2 = zeros(size(rvecIn));
-        if mv==1 || mv==4 || mv==5 %colission check for left and down
+        % Move matrix is this
+        % The key to using this is to have the right orientation set up
+        % This is why axes are on now
+        %1 -x left 
+        %2 +x right 
+        %3 +ydown?
+        %4 -y up
+        %5 +z
+        %6 -z
+        if mv==1 || mv==4 || mv==6 %collision check for left up and down (-z)
             for ni = 1:numel(rvecIn)
                 if rvecIn(G.Moves(ni,mv)) ~= 1
                     rvec2(G.Moves(ni,mv)) = rvecIn(ni);
@@ -182,17 +191,18 @@ end
         G.movecount = G.movecount+1;
         mv=0;
         if strcmp(key,'leftarrow') || strcmp(key,'l')|| strcmp(key,'1')  %-x
-            mv = 2;
-        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
             mv = 1;
+        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
+            mv = 2;
         elseif strcmp(key,'uparrow')|| strcmp(key,'u')|| strcmp(key,'3')  %+y
             mv = 3;
         elseif strcmp(key,'downarrow')|| strcmp(key,'d') || strcmp(key,'4') %-y
             mv = 4;
-        elseif strcmp(key,'n') || strcmp(key,'5') %-y
+        elseif strcmp(key,'n') || strcmp(key,'5') %+z
             mv = 5;
-        elseif strcmp(key,'s') || strcmp(key,'6') %-y
+        elseif strcmp(key,'s') || strcmp(key,'6') %-z
             mv = 6;    
+        %
         end
         if mv>0
             map_expected=G.im2;
@@ -207,9 +217,9 @@ end
             elseif mv==4
                 map_expected = circshift(map_expected,[-1 0 0]);
             elseif mv==5
-                map_expected = circshift(map_expected,[0 0 -1]);
-            elseif mv==6
                 map_expected = circshift(map_expected,[0 0 1]);
+            elseif mv==6
+                map_expected = circshift(map_expected,[0 0 -1]);
             end
             %G.movecount = G.movecount+1;
             G.robvec = applyMove(mv, G.robvec);
@@ -224,7 +234,7 @@ end
             end
         end
     end
-    function t_Callback(~,~)
+    function t_Callback(~,~)%Joystick callback
         try
             mv=0;%Reset move selector
             Y=axis(joy, 1);     % X-axis is joystick axis 1
@@ -268,7 +278,7 @@ end
             return;
         end
     end
-    function movetomv(mv)
+    function movetomv(mv)%Used for joystick stuff
         if mv>0
             map_expected=G.im2;
             G.movecount = G.movecount+1;
@@ -354,8 +364,9 @@ end
         voxel_image(RobotPts, vox_sz,'r',1);
         
         axis equal
-        axis off;
-        view([-80, 30]);
+        axis on;
+%         view([90 -90]);%2D Top-Down view
+        view([97.6, -21.2]); %This view is great for the 3D viewing
         hold off
         drawnow()
     end
@@ -401,10 +412,10 @@ end
                 Moves(i,4) = world(r-1,c,h);
             end
             if blk(r,c,h+1) == 0
-                Moves(i,6) = world(r,c,h+1);
+                Moves(i,5) = world(r,c,h+1);
             end
             if blk(r,c,h-1) == 0
-                Moves(i,5) = world(r,c,h-1);
+                Moves(i,6) = world(r,c,h-1);
             end
         end
         

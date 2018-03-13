@@ -295,7 +295,7 @@ elseif mapnum==27
         1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1;
         1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1;
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;];
-    A=fliplr(A);
+    %A=fliplr(A);
     blk(:,:,1)=ones(size(A));
     blk(:,:,6)=ones(size(A));
     for i=2:5
@@ -325,8 +325,8 @@ elseif mapnum==29
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;];
     A=fliplr(A);
     blk(:,:,1)=ones(size(A));
-    blk(:,:,6)=ones(size(A));
-    for i=2:5
+    blk(:,:,3)=ones(size(A));%6
+    for i=2:2%5
         blk(:,:,i)=A;
     end
 elseif mapnum==30
@@ -352,6 +352,9 @@ elseif mapnum==31
         1,1,0,0,0,0,0,0,0,0,1
         1,0,0,0,0,0,0,0,1,0,1
         1,1,1,1,1,1,1,1,1,1,1]);
+elseif mapnum==32
+    
+    
 end
 blk = flipud(blk);
 end

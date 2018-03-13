@@ -23,11 +23,11 @@ if nargin<1
     k = 100;%num particles
     itr=1;
     number=1;
-    map=0;
+    map=30;
     max_steps=250;
-    p1=1;
-    p2=0;
-    p3=0;
+    p1=0.33;
+    p2=0.33;
+    p3=0.34;
     p4=0;
     p5=0;
     p6=0;
@@ -211,52 +211,54 @@ end
         rvec6Out = zeros(size(rvec6In));
         switch mv
             % Move matrix is this
-            %1 left (actually right)
-            %2 right (actually left)
-            %3 down?
-            %4 up
+            %1 -x left 
+            %2 +x right 
+            %3 +y up
+            %4 -y down
             %5 +z
             %6 -z
+            %To picture these rotations imagine having a 3-axis top with 1
+            %2 3 4 5 6 on each side, spin it to see the rotations!
             case 1
                 mv2=4;
                 mv3=2;
                 mv4=3;
-                mv5=6;
-                mv6=5;
+                mv5=5;
+                mv6=6;
             case 2
                 mv2=3;
-                mv3=3;
-                mv4=1;
+                mv3=1;
+                mv4=4;
                 mv5=5;
-                mv6=4;
+                mv6=6;
             case 3
                 mv2=1;
-                mv3=5;
-                mv4=4;
-                mv5=2;
+                mv3=4;
+                mv4=2;
+                mv5=5;
                 mv6=6;
             case 4
                 mv2=2;
-                mv3=6;
-                mv4=3;
-                mv5=1;
-                mv6=5;
+                mv3=3;
+                mv4=1;
+                mv5=5;
+                mv6=6;
             case 5
-                mv2=4;
-                mv3=2;
-                mv4=6;
-                mv5=3;
-                mv6=1;
-            case 6
-                mv2=4;
-                mv3=1;
-                mv4=5;
-                mv5=4;
+                mv2=3;
+                mv3=6;
+                mv4=4;
+                mv5=1;
                 mv6=2;
+            case 6
+                mv2=3;
+                mv3=5;
+                mv4=4;
+                mv5=2;
+                mv6=1;
             otherwise
                 disp('bad mv');
         end
-        if mv==1 || mv==4 || mv==5%Collision check for left and down
+        if mv==1 || mv==4 || mv==6%Collision check for left and down and -z
             for ni = 1:numel(rvec1In)%G.Moves(ni,mv) returns 1 if there is a free space after the movement mv
                 if rvec1In(G.Moves(ni,mv)) == 0 && rvec2In(G.Moves(ni,mv)) == 0 && rvec3In(G.Moves(ni,mv)) == 0 && rvec4In(G.Moves(ni,mv)) == 0 && rvec5In(G.Moves(ni,mv)) == 0 && rvec6In(G.Moves(ni,mv)) == 0 
                     %If there isn't any species at that location
@@ -282,7 +284,7 @@ end
             end
         end
         %type 2 movement check
-        if mv2==1 || mv2==4 || mv2==5 %Collision check for left and down
+        if mv2==1 || mv2==4 || mv2==6 %Collision check for left and down
             for ni = 1:numel(rvec2In)%G.Moves(ni,mv) returns 1 if there is a free space after the movement mv
                 if rvec1Out(G.Moves(ni,mv2)) == 0 && rvec2In(G.Moves(ni,mv2)) == 0 && rvec3In(G.Moves(ni,mv2)) == 0 && rvec4In(G.Moves(ni,mv2)) == 0 && rvec5In(G.Moves(ni,mv2)) == 0 && rvec6In(G.Moves(ni,mv2)) == 0
                     %If there isn't a species of type 1,2,3, or 4 that will move to
@@ -307,7 +309,7 @@ end
             end
         end
         %type 3 collision check
-        if mv3==1 || mv3==4 || mv3==5%Collision check for left and down
+        if mv3==1 || mv3==4 || mv3==6%Collision check for left and down
             for ni = 1:numel(rvec3In)%G.Moves(ni,mv) returns 1 if there is a free space after the movement mv
                 if rvec1Out(G.Moves(ni,mv3)) == 0 && rvec2Out(G.Moves(ni,mv3)) == 0 && rvec3In(G.Moves(ni,mv3)) == 0 && rvec4In(G.Moves(ni,mv3)) == 0 && rvec5In(G.Moves(ni,mv3)) == 0 && rvec6In(G.Moves(ni,mv3)) == 0
                     %If there isn't a species of type 1,2,3, or 4 that will move to
@@ -332,7 +334,7 @@ end
             end
         end
         %type 4 collision check
-        if mv4==1 || mv4==4 || mv4==5%Collision check for left and down
+        if mv4==1 || mv4==4 || mv4==6%Collision check for left and down
             for ni = 1:numel(rvec4In)%G.Moves(ni,mv) returns 1 if there is a free space after the movement mv
                 if rvec1Out(G.Moves(ni,mv4)) == 0 && rvec2Out(G.Moves(ni,mv4)) == 0 && rvec3Out(G.Moves(ni,mv4)) == 0 && rvec4In(G.Moves(ni,mv4)) == 0 && rvec5In(G.Moves(ni,mv4)) == 0 && rvec6In(G.Moves(ni,mv4)) == 0
                     %If there isn't a species of type 1,2,3, or 4 that will move to
@@ -356,8 +358,8 @@ end
                 rvec4In(ni)=rvec4Out(ni);%Set old locations with new location
             end
         end
-         %type 5 collision check
-        if mv5==1 || mv5==4 || mv5==5%Collision check for left and down
+        %type 5 collision check
+        if mv5==1 || mv5==4 || mv5==6%Collision check for left and down
             for ni = 1:numel(rvec5In)%G.Moves(ni,mv) returns 1 if there is a free space after the movement mv
                 if rvec1Out(G.Moves(ni,mv5)) == 0 && rvec2Out(G.Moves(ni,mv5)) == 0 && rvec3Out(G.Moves(ni,mv5)) == 0 && rvec4In(G.Moves(ni,mv5)) == 0 && rvec5In(G.Moves(ni,mv5)) == 0 && rvec6In(G.Moves(ni,mv5)) == 0
                     %If there isn't a species of type 1,2,3, or 4 that will move to
@@ -381,24 +383,24 @@ end
                 rvec5In(ni)=rvec5Out(ni);%Set old locations with new location
             end
         end
-          %type 6 collision check
-        if mv6==1 || mv6==4 || mv6==5%Collision check for left and down
+        %type 6 collision check
+        if mv6==1 || mv6==4 || mv6==6%Collision check for left and down
             for ni = 1:numel(rvec6In)%G.Moves(ni,mv) returns 1 if there is a free space after the movement mv
                 if rvec1Out(G.Moves(ni,mv6)) == 0 && rvec2Out(G.Moves(ni,mv6)) == 0 && rvec3Out(G.Moves(ni,mv6)) == 0 && rvec4In(G.Moves(ni,mv6)) == 0 && rvec5In(G.Moves(ni,mv6)) == 0 && rvec6In(G.Moves(ni,mv6)) == 0
                     %If there isn't a species of type 1,2,3, or 4 that will move to
                     %that location
-                    rvec6Out(G.Moves(ni,mv5)) = rvec6In(ni);%Set result to new location
+                    rvec6Out(G.Moves(ni,mv6)) = rvec6In(ni);%Set result to new location
                     rvec6In(ni)=0;%Clear previous location for robot
                 else
-                    rvec5Out(ni)=rvec6In(ni);%Keep old location
+                    rvec6Out(ni)=rvec6In(ni);%Keep old location
                 end
-                rvec6In(ni)=rvec5Out(ni);%Update old info with new location
+                rvec6In(ni)=rvec6Out(ni);%Update old info with new location
             end
         else %Collision check for down and right
             for ni=numel(rvec6In):-1:1%Starting from the end
                 if rvec1Out(G.Moves(ni,mv6)) == 0 && rvec2Out(G.Moves(ni,mv6)) == 0 && rvec3Out(G.Moves(ni,mv6)) == 0 && rvec4In(G.Moves(ni,mv6)) == 0 && rvec5In(G.Moves(ni,mv6)) == 0 && rvec6In(G.Moves(ni,mv6)) == 0
                     %Equivalent to ~=1
-                    rvec5Out(G.Moves(ni,mv6)) = rvec6In(ni);%Set result to new location
+                    rvec6Out(G.Moves(ni,mv6)) = rvec6In(ni);%Set result to new location
                     rvec6In(ni)=0;%clear input for robot ni
                 else
                     rvec6Out(ni)=rvec6In(ni);%Update result with old location
@@ -422,21 +424,25 @@ end
         G.movecount = G.movecount+1;
         mv=0;
         if strcmp(key,'leftarrow') || strcmp(key,'l')|| strcmp(key,'1')  %-x
-            mv = 2;
-        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
             mv = 1;
+        elseif strcmp(key,'rightarrow')|| strcmp(key,'r')|| strcmp(key,'2')  %+x
+            mv = 2;
         elseif strcmp(key,'uparrow')|| strcmp(key,'u')|| strcmp(key,'3')  %+y
             mv = 3;
         elseif strcmp(key,'downarrow')|| strcmp(key,'d') || strcmp(key,'4') %-y
             mv = 4;
         elseif strcmp(key,'n') || strcmp(key,'5') %+z
-            mv = 6;
+            mv = 5;
         elseif strcmp(key,'s') || strcmp(key,'6') %-z
-            mv = 5;    
+            mv = 6;    
         end
         if mv>0
-            map_1=G.im2;
-            
+            map_1=G.im2==1;
+            map_2=G.im2==2;
+            map_3=G.im2==3;
+            map_4=G.im2==4;
+            map_5=G.im2==5;
+            map_6=G.im2==6;
             % map_expected has 1 where robot is expected to be
             if mv==1
                 map_1 = circshift(map_1,[0 -1 0]);
@@ -447,14 +453,39 @@ end
                 map_6 = circshift(map_6, [0 0 -1]);
             elseif mv==2
                 map_1 = circshift(map_1,[0 1 0]);
+                map_2 = circshift(map_2,[1 0 0]);
+                map_3 = circshift(map_3,[0 -1 0]);
+                map_4 = circshift(map_4,[-1 0 0]);
+                map_5 = circshift(map_5,[0 0 1]);
+                map_6 = circshift(map_6, [0 0 -1]);
             elseif mv==3
                 map_1 = circshift(map_1,[1 0 0]);
+                map_2 = circshift(map_2,[0 -1 0]);
+                map_3 = circshift(map_3,[-1 0 0]);
+                map_4 = circshift(map_4,[0 1 0]);
+                map_5 = circshift(map_5,[0 0 1]);
+                map_6 = circshift(map_6, [0 0 -1]);
             elseif mv==4
                 map_1 = circshift(map_1,[-1 0 0]);
+                map_2 = circshift(map_2,[0 1 0]);
+                map_3 = circshift(map_3,[1 0 0]);
+                map_4 = circshift(map_4,[0 -1 0]);
+                map_5 = circshift(map_5,[0 0 1]);
+                map_6 = circshift(map_6, [0 0 -1]);                
             elseif mv==5
-                map_1 = circshift(map_1,[0 0 -1]);
-            elseif mv==6
                 map_1 = circshift(map_1,[0 0 1]);
+                map_2 = circshift(map_2,[1 0 0]);
+                map_3 = circshift(map_3,[0 0 -1]);
+                map_4 = circshift(map_4,[1 0 0]);
+                map_5 = circshift(map_5,[0 -1 0]);
+                map_6 = circshift(map_6,[0 1 0]);
+            elseif mv==6
+                map_1 = circshift(map_1,[0 0 -1]);
+                map_2 = circshift(map_2,[1 0 0]);
+                map_3 = circshift(map_3,[0 0 1]);
+                map_4 = circshift(map_4,[-1 0 0]);
+                map_5 = circshift(map_5,[0 1 0]);
+                map_6 = circshift(map_6,[0 -1 0]);
             end
             %G.movecount = G.movecount+1;
             [G.type1loc, G.type2loc, G.type3loc, G.type4loc, G.type5loc, G.type6loc]= applyMove(mv, G.type1loc, G.type2loc, G.type3loc, G.type4loc, G.type5loc, G.type6loc);%Move robots and put it in actual positions
@@ -466,7 +497,7 @@ end
             end
         end
     end
-    function t_Callback(~,~)
+    function t_Callback(~,~)%Joystick input
         try
             mv=0;%Reset move selector
             Y=axis(joy, 1);     % X-axis is joystick axis 1
@@ -510,7 +541,7 @@ end
             return;
         end
     end
-    function movetomv(mv)
+    function movetomv(mv)%Joystick input processing
         if mv>0%Do the move as seen from the 
             %global reference frame based on the type given
             type1temp=G.type1loc;
@@ -648,15 +679,6 @@ end
         G.covered=find(current_map==0);
  clf       
  draw3d()
- 
-%  [G.robscatx,G.robscaty,G.robscatz]=find(current_map== 2);
- %  scatter3(G.robscatx,G.robscaty,G.robscatz);
- %         colormap(G.colormap(unique(current_map)+1,:));
- 
- 
-%  if G.drawflag==0
-%      G.axis=imagesc(current_map); %show map that updates as robots explore
-%  end
     end
     function draw3d()
         figure(G.fig)
@@ -670,7 +692,7 @@ end
         voxel_image(GoalPts, vox_sz,[0.9,0.9,0.9],0);
         [x,y,z]=ind2sub(size(G.update_map),G.boundvec);
         frontier=[x,y,z];
-        voxel_image(frontier, vox_sz,'b',0.3);
+        voxel_image(frontier, vox_sz,'b',0.1);
         [x,y,z]=ind2sub(size(G.update_map), G.covered);
         covered=[x,y,z];
         voxel_image(covered, vox_sz,[1 1 1],0.1,'r');
@@ -693,8 +715,9 @@ end
         Robot6Pts=[x,y,z];
         voxel_image(Robot6Pts, vox_sz,'y',1);
         axis equal
-        axis off;
-        view([-80, 30]);
+        axis on;
+        view([90 -90]);%2D Top-Down view
+%         view([97.6, -21.2]); %This view is great for the 3D viewing
         hold off
         drawnow()
     end
@@ -705,7 +728,7 @@ end
         else
             FC=' frontier Cells';
         end
-        title([num2str(G.movecount), ' moves, ',num2str(sum(G.robvec)),' particles, ', num2str(nnz( frontier_exp)), FC, ', ', num2str(nnz(G.free)), ' free cells'])
+        title([num2str(G.movecount), ' moves, ',num2str(sum(G.robvec)),' particles, ', num2str(nnz(frontier_exp)), FC, ', ', num2str(nnz(G.free)), ' free cells'])
     end
 %% setup map
     function [blk,free,robvec,Moves] = SetupWorld(mapnum)
@@ -740,10 +763,10 @@ end
                 Moves(i,4) = world(r-1,c,h);
             end
             if blk(r,c,h+1) == 0
-                Moves(i,6) = world(r,c,h+1);
+                Moves(i,5) = world(r,c,h+1);
             end
             if blk(r,c,h-1) == 0
-                Moves(i,5) = world(r,c,h-1);
+                Moves(i,6) = world(r,c,h-1);
             end
         end
         
