@@ -262,6 +262,22 @@ elseif mapnum==25
     map_inputz(blk == 1) = 0;
     map_inputz(blk == 0) = 1;
     blk=map_inputz;
+elseif mapnum==253
+    blk = imread('leafBWar5000edit.png'); % completely connected and bounded image of a
+    % larg part of a leaf with 5000 free spaces
+    blk= im2bw(blk);
+    m2=size(blk,1);
+    n2=size(blk,2);
+    map_inputz=zeros(m2,n2);
+    map_inputz(blk == 1) = 0;
+    map_inputz(blk == 0) = 1;
+    A=blk;
+    blk=map_inputz;
+    blk(:,:,1)=ones(size(A));
+    blk(:,:,6)=ones(size(A));
+    for i=2:5
+        blk(:,:,i)=A;
+    end
 elseif mapnum==26
     blk = imread('HTree_3_1441.png'); % A 3 level H tree with 1441 free spaces
     blk= im2bw(blk);

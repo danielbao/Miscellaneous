@@ -20,7 +20,7 @@ function [movecount,k,nodecount,init_config] = JanusFrontier3D(k,itr,max_steps,m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global G;
 if nargin<1
-    k = 100;%num particles
+    k = 1000;%num particles
     itr=1;
     number=1;
     map=30;
@@ -31,13 +31,15 @@ if nargin<1
     p4=0;
     p5=0;
     p6=0;
+    fill_flag=0;
+    fill=0;
     config_flag=0;
 end
 vox_sz = [1,1,1]; %length of cube sides
 G.fig = figure(number);
 set(gcf,'Renderer','OpenGL');
 if map==0
-    G.mapnum=27;%22
+    G.mapnum=27;%27
 else
     G.mapnum=map;
 end
